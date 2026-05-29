@@ -83,19 +83,19 @@ Detailed comparison and pricing at [editmamei.com/pricing](https://editmamei.com
 
 ## Privacy & trust
 
-Editmamei is not a cloud service. It runs on your machine and drives the real Adobe Photoshop you already have installed — not a hosted, web, or cloud version. Editmamei itself sends nothing to us: no telemetry, no analytics, no transmission of your files, templates, or metadata to Editmamei's servers.
+Editmamei is a local MCP server that drives the real Adobe Photoshop you already have installed. Your documents, templates, and project files stay on your machine — Editmamei itself doesn't ship analytics, crash reports, or telemetry.
 
-One thing to be clear about, because it matters: your AI assistant is a cloud service. When you ask it to analyze an image — for example, the visual-verification preview — a downscaled JPEG is sent to *that AI provider*, exactly as if you'd dropped the file into a chat with it. That's a property of using a cloud AI and a function of which assistant you choose — not a hop Editmamei adds or routes through its own infrastructure.
+Worth being clear about: your AI assistant is a cloud service. When you ask it to analyze an image — for example, the visual-verification preview — a downscaled JPEG is sent to *that AI provider*, exactly as if you'd dropped the file into a chat with it. That's a property of using a cloud AI and a function of which assistant you choose — not a hop Editmamei adds.
 
-The only data Editmamei itself transmits is Pro license validation: a license key + version + OS, sent about once every 7 days. No document, image, file path, or template data, ever.
+The only data Editmamei itself transmits is Pro license validation: a license key + version + OS, sent about once every 7 days. No document, image, file path, or template data.
 
-**Verifiable, not just promised.** Editmamei is closed-source, so the privacy claims are backed by things you can check yourself:
+**Verifiable, not just promised.** Editmamei is closed-source, so what we can verify, we do:
 
 - **npm provenance** — every published build is cryptographically linked to the source commit and CI run that produced it.
 - **SBOM** — a full software bill of materials lists every dependency in each release.
 - **Abandonment → MIT** — if Editmamei goes unmaintained for 24 months, the license converts to MIT automatically. You're never stranded on a tool you can't keep alive.
 
-Full privacy policy at [editmamei.com/privacy](https://editmamei.com/privacy). Security disclosures at [editmamei.com/security](https://editmamei.com/security).
+Full details in the [privacy policy](https://editmamei.com/privacy). Security disclosures at [editmamei.com/security](https://editmamei.com/security).
 
 ---
 

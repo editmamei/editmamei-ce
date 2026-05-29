@@ -78,7 +78,7 @@ Through `photoshop_get_preview`, which returns a downscaled JPEG of the current 
 
 ### Does Editmamei collect any data about my edits?
 
-No. Editmamei writes a local session log to `~/.editmamei/sessions/<session-id>.ndjson` (used for debugging and by the Templates system), but that file stays on your machine. Nothing is transmitted anywhere.
+No — not by Editmamei itself. Editmamei writes a local session log to `~/.editmamei/sessions/<session-id>.ndjson` (used for debugging and by the Templates system) that stays on your disk; Editmamei doesn't read it or transmit it. (What your AI client does with content you share in chat is a separate question — see the [privacy policy](https://editmamei.com/privacy).)
 
 ### Can I run Editmamei against multiple Photoshop versions installed side by side?
 
