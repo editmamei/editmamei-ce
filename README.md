@@ -1,14 +1,16 @@
 # Editmamei
 
-**The AI-Superpowered Photoshop Automation Bridge.**
+**Unlock Photoshop with natural-language photo editing**
 
 *(Pronounced like* edamame*. Yes, the snack.)*
 
 [![npm version](https://img.shields.io/npm/v/editmamei.svg)](https://www.npmjs.com/package/editmamei)
-[![License: Proprietary](https://img.shields.io/badge/License-Proprietary-red.svg)](https://editmamei.com/license)
+[![License: Proprietary](https://img.shields.io/badge/License-Proprietary-blue.svg)](https://editmamei.com/license)
 [![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20macOS-lightgrey.svg)]()
 
 Editmamei is a Model Context Protocol (MCP) server that lets your AI assistant — Claude Desktop, Cursor, Claude Code, and any other MCP-compatible client — drive Adobe Photoshop directly. Open documents, build non-destructive layer stacks, apply adjustments, run smart selections, save reusable editing recipes, and export final deliverables, all through natural-language conversation with your AI.
+
+Unlike cloud-based AI photo tools, Editmamei drives the actual Photoshop application installed on your computer — the full program, with the speed of AI directing it. That lowers the barrier for anyone who finds Photoshop's menus intimidating, and gives editors who've known those menus for years a faster, more flexible way to work.
 
 This repository is the **public face** of Editmamei. It hosts the user-facing documentation, the issue tracker, and the changelog. The source for the npm package itself is private; what you install from npm is the same compiled artifact described in these docs.
 
@@ -45,7 +47,7 @@ The AI calls `photoshop_ping` and you'll see your Photoshop version returned. Fu
 
 ## What it does
 
-Editmamei exposes ~80 Photoshop operations as MCP tools — each with structured input/output, schema validation, and context awareness. Your AI calls them as primitives in service of whatever you actually want to do. The result is Photoshop that responds to *"make the sky more dramatic but keep the foreground natural"* instead of *Layer → New Adjustment Layer → Curves → drag the curve up at the highlight end.*
+Editmamei exposes ~80 Photoshop operations as MCP tools — each with structured input/output, schema validation, and context awareness. Your AI calls them as building blocks in service of whatever you actually want to do. The result is Photoshop that responds to *"make the sky more dramatic but keep the foreground natural"* instead of *Layer → New Adjustment Layer → Curves → drag the curve up at the highlight end.*
 
 - **Documents** — open, save, export, close; full format coverage (PSD, JPEG, PNG, TIFF, DNG, HEIC, raw)
 - **Layers** — create, duplicate, delete, rename, reorder, group, merge, flatten; opacity, blend mode, visibility, locking
@@ -55,6 +57,8 @@ Editmamei exposes ~80 Photoshop operations as MCP tools — each with structured
 - **Templates** — save the current edit as a reproducible recipe; apply later to new images
 - **Visual verification** — downscaled preview JPEGs and per-channel histograms returned inline
 - **History & Actions** — undo, redo, jump to state; play recorded Photoshop Actions
+
+You stay in command: co-edit with your AI in real time, then save the result as a reusable recipe and batch it across a shoot — a recipe *you* designed, not a fixed pipeline.
 
 Full feature breakdown at [editmamei.com](https://editmamei.com).
 
@@ -77,11 +81,21 @@ Detailed comparison and pricing at [editmamei.com/pricing](https://editmamei.com
 
 ---
 
-## Privacy
+## Privacy & trust
 
-Editmamei runs entirely on your machine. There is no cloud, no telemetry, no transmission of your content. Photos, documents, templates, and metadata stay local. Photoshop does the work; Editmamei translates between your AI's intent and Photoshop's scripting API.
+Editmamei is not a cloud service. It runs on your machine and drives the real Adobe Photoshop you already have installed — not a hosted, web, or cloud version. Editmamei itself sends nothing to us: no telemetry, no analytics, no transmission of your files, templates, or metadata to Editmamei's servers.
 
-The one exception is Pro license validation, which sends a license key + Editmamei version + OS to the license server roughly once per 7 days. It contains no document, image, file path, or template data. Full privacy policy at [editmamei.com/privacy](https://editmamei.com/privacy).
+One thing to be clear about, because it matters: your AI assistant is a cloud service. When you ask it to analyze an image — for example, the visual-verification preview — a downscaled JPEG is sent to *that AI provider*, exactly as if you'd dropped the file into a chat with it. That's a property of using a cloud AI and a function of which assistant you choose — not a hop Editmamei adds or routes through its own infrastructure.
+
+The only data Editmamei itself transmits is Pro license validation: a license key + version + OS, sent about once every 7 days. No document, image, file path, or template data, ever.
+
+**Verifiable, not just promised.** Editmamei is closed-source, so the privacy claims are backed by things you can check yourself:
+
+- **npm provenance** — every published build is cryptographically linked to the source commit and CI run that produced it.
+- **SBOM** — a full software bill of materials lists every dependency in each release.
+- **Abandonment → MIT** — if Editmamei goes unmaintained for 24 months, the license converts to MIT automatically. You're never stranded on a tool you can't keep alive.
+
+Full privacy policy at [editmamei.com/privacy](https://editmamei.com/privacy). Security disclosures at [editmamei.com/security](https://editmamei.com/security).
 
 ---
 
