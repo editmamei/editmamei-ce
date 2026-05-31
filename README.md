@@ -51,15 +51,6 @@ Here's what's actually happening:
 
 The AI looks at the result and refines it; Photoshop performs every actual change.
 
-```mermaid
-flowchart LR
-    A["You<br/>describe the edit<br/>in plain words"] --> B["AI assistant<br/>plans the steps"]
-    B --> C["Your Photoshop<br/>edits with its<br/>own tools"]
-    C --> D["Finished photo<br/>fully layered<br/>& editable"]
-    C -. "shows the result back" .-> B
-    B -. "checks & refines" .-> C
-```
-
 ### Edited, not generated
 
 Most "AI photo" tools are *generative*. They invent new pixels: skies, objects, even faces that were never in your shot. **Editmamei doesn't do that.** It works only with the pixels you captured, using the same non-generative Photoshop tools professionals have used for years: adjustment layers, masks, selections, filters. The AI is the director, not the artist. Your photo is yours, just finished faster.
