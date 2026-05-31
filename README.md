@@ -28,11 +28,11 @@ npm install -g editmamei
 editmamei install
 ```
 
-Then restart your AI client (Claude Desktop, Cursor, Claude Code) and ask it to ping Photoshop:
+`editmamei install` registers Editmamei with **Claude Desktop**. For Cursor or Claude Code, follow the [manual configuration steps](docs/installation.md#manual-configuration). Then restart your MCP client and ask it to ping Photoshop:
 
 > "Is Photoshop connected?"
 
-You'll see your Photoshop version returned. Full setup walkthrough in [docs/getting-started.md](docs/getting-started.md).
+You'll see your Photoshop version returned. Full setup walkthrough in [docs/getting-started.md](docs/getting-started.md). To check your install state any time, run `editmamei status`.
 
 ---
 
@@ -90,7 +90,7 @@ Editmamei gives your AI assistant a working photographer's toolkit inside Photos
 - **Smart selections** — Color Range, Magic Wand, plus rectangle/feather; rich selection feedback. Pro adds Sensei-backed Select Subject and Select Sky.
 - **Non-destructive adjustments** — Curves, Levels, Hue/Saturation, Brightness/Contrast as adjustment layers
 - **Filters** — Gaussian Blur, Motion Blur, Sharpen, Add Noise; layer styles (drop shadow, stroke, outer glow)
-- **Templates** — apply built-in recipes to new images; create your own with Pro
+- **Templates** — apply saved recipes (markdown + before/after previews + tool-call evidence) to new images; create your own with Pro
 - **Visual verification** — downscaled preview JPEGs returned inline. Pro adds per-channel histograms with mean/stdev/median.
 - **History & Actions** — undo, redo, jump to state; play recorded Photoshop Actions
 
@@ -113,7 +113,7 @@ Full feature breakdown at [editmamei.com](https://editmamei.com).
 | Layer styles + text (drop shadow, stroke, glow; font, color, alignment) | ✅ | ✅ |
 | History + Actions (undo, redo, jump to state, play recorded Photoshop Actions) | ✅ | ✅ |
 | Visual preview (inline JPEGs so the AI can see what just changed) | ✅ | ✅ |
-| Apply built-in templates | ✅ | ✅ |
+| Apply saved templates | ✅ | ✅ |
 | Create / save / delete custom templates | | ✅ |
 | Sensei-backed selections (Select Subject, Select Sky) | | ✅ |
 | Per-channel histograms | | ✅ |

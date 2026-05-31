@@ -38,7 +38,7 @@ Officially:
 - [Cursor](https://cursor.com/)
 - [Claude Code](https://claude.ai/code)
 
-Any MCP-compatible client should work — Editmamei is a standard MCP stdio server. If you use a different client, the [manual configuration steps](installation.md#manual-configuration-if-editmamei-install-cant-reach-your-client) show what to put in your client's config.
+Any MCP-compatible client should work — Editmamei is a standard MCP stdio server. `editmamei install` auto-configures Claude Desktop; for Cursor, Claude Code, or other clients, the [manual configuration steps](installation.md#manual-configuration) show what to put in your client's config.
 
 ### Which Photoshop versions are supported?
 
@@ -96,32 +96,15 @@ Yes. Editmamei auto-detects Photoshop, and you can pin a specific install via th
 
 ### What's the difference between Community and Pro?
 
-See the full breakdown in [pro-features.md](pro-features.md). Short version: Community covers the core editing surface (documents, layers, basic adjustments, filters, simple selections). Pro adds the Templates system, the full non-destructive workflow surface, the smart selection tools (Select Subject / Sky / Color Range), layer styles, and advanced transforms.
+See the full breakdown in [pro-features.md](pro-features.md). Short version: Community covers the full working-photographer editing surface — documents, layers, non-destructive adjustment layers, filters, layer styles, masks, Color Range and Magic Wand selections, applying templates, history, actions, text, image placement. Pro adds three things on top: **authoring** your own templates (create / save / delete; CE already applies them), the **Sensei-backed** Select Subject and Select Sky, and **per-channel histograms**. See the canonical editions table in the [main README](../README.md#editions).
 
 ### How do I activate a Pro license?
 
-```bash
-editmamei license activate <your-license-key>
-```
-
-Then restart your MCP client. Full details in [installation.md](installation.md#activate-pro).
-
-### Can I move my Pro license to a different machine?
-
-Yes:
-
-```bash
-editmamei license deactivate    # on the old machine
-editmamei license activate <key>  # on the new machine
-```
-
-### What happens to my Pro tools if I let my subscription lapse?
-
-Pro tools become unavailable on the next license check (within 7 days of the lapse). Your saved templates and session logs at `~/.editmamei/` are preserved — they don't disappear, they just can't be used until the subscription is reactivated.
+Pro activation lands with the v1.0 launch. See [pro-features.md](pro-features.md) for what Pro adds and [roadmap.md](roadmap.md) for current status.
 
 ### Do you offer a free trial?
 
-See [editmamei.com/pricing](https://editmamei.com/pricing) for current trial / refund policy.
+Trial and refund policy will be published at [editmamei.com/pricing](https://editmamei.com/pricing) with the v1.0 launch.
 
 ---
 
