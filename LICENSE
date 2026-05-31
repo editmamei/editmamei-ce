@@ -1,0 +1,31 @@
+Creative Commons Attribution 4.0 International License (CC BY 4.0)
+
+The contents of this repository — the README, CHANGELOG, the docs at
+docs/, the issue templates, and the contribution / security policies —
+are licensed under the Creative Commons Attribution 4.0 International
+License (CC BY 4.0). You may share and adapt the material for any
+purpose, including commercially, so long as you give appropriate credit,
+provide a link to the license, and indicate if changes were made.
+
+Full license text: https://creativecommons.org/licenses/by/4.0/legalcode
+
+---
+
+IMPORTANT — this LICENSE covers ONLY this docs repository.
+
+The Editmamei npm package itself (the MCP server source, the compiled
+artifact published as `editmamei` on npm) is **proprietary** and is
+licensed separately. The source code is not in this repository. The
+published npm artifact carries its own LICENSE file describing the
+proprietary terms. See https://editmamei.com/license for the full text.
+
+In short:
+
+  This repo (editmamei-ce)   — CC BY 4.0  — you can fork and adapt.
+  The npm package (editmamei) — proprietary — use as licensed; no
+                                derivative works without permission.
+
+The two are deliberately separate. The public docs being open lets users,
+search engines, and AI assistants index and quote them freely. The
+proprietary npm-package license protects the implementation that the
+docs describe.

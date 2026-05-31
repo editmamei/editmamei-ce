@@ -138,13 +138,13 @@ The only data Editmamei itself transmits is Pro license validation: license key 
 
 ## Issues & support
 
-**Bug reports and feature requests** belong in [this repo's issue tracker](https://github.com/editmamei/editmamei-ce/issues). Before opening one, please read the templates — they tell you what to include for a fast triage.
+**Bug reports and feature requests** belong in [this repo's issue tracker](https://github.com/editmamei/editmamei-ce/issues). Before opening one, please read the templates and [CONTRIBUTING.md](CONTRIBUTING.md) — they tell you what to include for a fast triage and which kinds of changes are open to PRs.
 
 **Important:** issues are public. **Do not paste your license key, full file paths from sensitive projects, or screenshots of unfinished client work.** The bug report template tells you what's safe to share.
 
 For account, billing, or license issues, email [support@editmamei.com](mailto:support@editmamei.com) (Pro subscribers) — those don't belong in a public issue.
 
-For security disclosures, see [editmamei.com/security](https://editmamei.com/security).
+For **security disclosures**, see [SECURITY.md](SECURITY.md) — please use GitHub Private Security Advisories or `security@editmamei.com` rather than the public issue tracker.
 
 ---
 
