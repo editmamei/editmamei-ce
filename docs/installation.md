@@ -1,6 +1,6 @@
 # Installation
 
-Editmamei is distributed as an npm package. The `editmamei install` subcommand handles MCP client registration for Claude Desktop, Cursor, and Claude Code automatically.
+Editmamei is distributed as an npm package. The `editmamei install` subcommand registers Editmamei with **Claude Desktop**. For Cursor or Claude Code, see [Manual configuration](#manual-configuration) below.
 
 ---
 
@@ -34,7 +34,7 @@ This installs the `editmamei` CLI globally.
 
 ---
 
-## Register with your MCP client
+## Register with Claude Desktop
 
 ```bash
 editmamei install
@@ -42,19 +42,27 @@ editmamei install
 
 This subcommand:
 
-1. Detects which MCP clients are installed on your system
-2. Writes the appropriate config entry for each
-3. Backs up any existing client config before modifying it
+1. Resolves Claude Desktop's config path on your OS (`%APPDATA%\Claude\claude_desktop_config.json` on Windows, `~/Library/Application Support/Claude/claude_desktop_config.json` on macOS).
+2. Backs up the existing config to `claude_desktop_config.json.bak` (only on the first run, to preserve your pre-install state).
+3. Adds an `editmamei` entry to `mcpServers`, or no-ops if the entry already matches.
 
-If you have multiple clients (e.g. Claude Desktop *and* Cursor), all of them get configured in one pass.
+Restart Claude Desktop after this completes — config changes only take effect on a fresh boot.
 
-Restart your MCP client(s) after this completes — config changes only take effect on a fresh boot.
+**Other MCP clients** (Cursor, Claude Code, anything else MCP-compatible) — `editmamei install` does not currently auto-configure these. Use the [Manual configuration](#manual-configuration) steps below.
+
+### Check your install state
+
+```bash
+editmamei status
+```
+
+Reports your platform, Node version, detected Photoshop install (if any), and whether Claude Desktop's config has the editmamei entry. Run this when troubleshooting.
 
 ---
 
-## Manual configuration (if `editmamei install` can't reach your client)
+## Manual configuration
 
-If `editmamei install` reports it couldn't write the config — for example, because you use a portable install of your MCP client — you can register Editmamei by hand.
+If `editmamei install` reports it couldn't write the config — for example, because Claude Desktop isn't installed — or you're using Cursor / Claude Code / another MCP client, register Editmamei by hand.
 
 ### Claude Desktop
 
@@ -161,12 +169,6 @@ The `uninstall` subcommand removes Editmamei from your MCP client configs. The `
 
 ---
 
-## Activate Pro
+## Pro
 
-If you have a Pro license:
-
-```bash
-editmamei license activate <your-license-key>
-```
-
-The Pro tool surface becomes available the next time your MCP client restarts. See [pro-features.md](pro-features.md) for what's included.
+Pro activation lands with the v1.0 launch — see [pro-features.md](pro-features.md) for what Pro adds and [roadmap.md](roadmap.md) for status.

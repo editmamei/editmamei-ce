@@ -10,25 +10,7 @@ This page describes the line between Community and Pro at v1.0. The split may ev
 
 ## Activating Pro
 
-```bash
-editmamei license activate <your-license-key>
-```
-
-Restart your AI client. The Pro tools appear in the available-tools list.
-
-To check current license status:
-
-```bash
-editmamei license status
-```
-
-To deactivate (e.g. when moving to a new machine):
-
-```bash
-editmamei license deactivate
-```
-
-Purchase a Pro license at [editmamei.com/pricing](https://editmamei.com/pricing).
+Pro activation ships with the v1.0 launch — the license CLI and purchase flow are part of that release. See [roadmap.md](roadmap.md) for current status. Purchasing and pricing will be at [editmamei.com/pricing](https://editmamei.com/pricing) once Pro is available.
 
 ---
 
@@ -45,7 +27,7 @@ The Community edition covers the core editing surface most photographers need da
 - **Layer masks** — create from selection, apply, delete
 - **Layer styles** — drop shadow, stroke, outer glow, inner shadow
 - **Selections** — Color Range, Magic Wand (alongside Rectangle / Select All / Deselect / Invert / Feather)
-- **Templates** — apply built-in templates (CE ships with a small starter set) and list available templates. Creating, saving, editing, and deleting templates is Pro.
+- **Templates** — list and apply user-saved templates from `~/.editmamei/templates/`. Templates are bundles that pair a markdown recipe with before/after previews and the captured tool-call evidence; CE applies them, Pro creates them.
 - **History** — undo, redo, get history states, jump to state
 - **Actions** — list, play recorded Photoshop Actions
 - **Preview & inspection** — downscaled preview JPEG, document info, layer tree (per-channel histograms are Pro)
@@ -69,7 +51,7 @@ A template is a reproducible aesthetic recipe — capture the current edit as a 
 - `photoshop_template_save` — saves the template bundle to `~/.editmamei/templates/<slug>/`
 - `photoshop_template_delete` — removes a saved template
 
-CE users get `photoshop_template_apply` and `photoshop_template_list` (above, under Community) plus a small set of built-in templates that ship with the package; they cannot create, save, or delete templates. Pro adds the authoring tools so editing decisions become repeatable rather than one-shots — the AI uses its own captured reasoning to drive the existing pipeline tools on a new image, self-judging against the template's exit criteria.
+CE users get `photoshop_template_apply` and `photoshop_template_list` (above, under Community); they can apply any template at `~/.editmamei/templates/<slug>/` but cannot create, save, or delete templates. Pro adds the authoring tools so editing decisions become repeatable rather than one-shots — the AI uses its own captured reasoning to drive the existing pipeline tools on a new image, self-judging against the template's exit criteria.
 
 ### Sensei-backed selections
 

@@ -8,6 +8,20 @@ For the canonical edition split (what's in CE today, what's in Pro today), see [
 
 ---
 
+## Landing with v1.0
+
+### First user-installable release
+
+The npm package `editmamei` currently publishes the `0.0.0-placeholder` stub that reserves the package name and prints a "Coming Soon" message. The first user-installable release is **v1.0.0**. Until v1.0 lands, `npm install -g editmamei` resolves the placeholder; full installable tooling waits on the release. The [CHANGELOG](../CHANGELOG.md) tracks what's already landed in the source tree toward v1.0.
+
+### Pro activation
+
+The license CLI (`editmamei license activate / deactivate / status`), the purchase flow at [editmamei.com/pricing](https://editmamei.com/pricing), and the license-validation backend are part of the v1.0 launch — not yet shipped. Until v1.0 lands, the Pro tools are inaccessible without a license, and there's no way to obtain a license.
+
+Once Pro activation ships, the [installation.md "Pro"](installation.md#pro), [pro-features.md "Activating Pro"](pro-features.md#activating-pro), and [faq.md "How do I activate a Pro license?"](faq.md#how-do-i-activate-a-pro-license) sections will get the actual CLI commands restored.
+
+---
+
 ## Coming in Pro post-v1.0
 
 ### Smart Object lifecycle
