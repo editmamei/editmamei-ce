@@ -18,17 +18,27 @@ PATCH bump for a latent template-literal-in-comment bug in `photoshop_move_layer
 
 ### Fixed
 
-- **`photoshop_move_layer_to_group`** — every call had been failing with a PS-side "Expected: ;" syntax error. The snippet's TypeScript-side `//` comment contained `${normNameHelper}` as a literal text reference; template literals evaluate `${}` regardless of comment context, so the helper's multi-line function body got injected into the middle of the comment, the helper's leading newline terminated the `//`, and the trailing comment text parsed as code. The comment is now plain prose; the snippet renders cleanly. (The same em-dash normalization that the snippet was *trying* to apply still works once the snippet actually executes.)
+- **Layer-to-group moves no longer fail with a syntax error.** Every move-into-group call had been failing with a Photoshop parse error; the fix lets em-dash normalization work as originally intended.
+  - Tool affected: `photoshop_move_layer_to_group`
+  - Root cause: `${normNameHelper}` interpolation lived inside a `//` comment in the TypeScript-side snippet body
+  - Template literals evaluate `${}` regardless of comment context — the helper's multi-line body got injected, its leading newline terminated the `//`, and the trailing comment text parsed as code
+  - Fix: comment rewritten as plain prose; snippet renders cleanly
+  - Found by reading the session NDJSON for the IMG_1022 grade — the tool's `error` field captured the exact PS-side syntax error
 
 ---
 
 ## [0.4.1] — 2026-06-05
 
-PATCH bump for one snippet-level silent-no-op bug in `photoshop_create_group`. The 2026-06-04 IMG_1022 session called `create_group(layers=["Warm — 81", "Curves — S-pop", "Vibrance", "Levels — contrast"])` and got back `moved_count: 1` — only `"Vibrance"` (the one name without an em-dash) matched. The other three landed in `not_found` silently because the snippet's `findLayerByName` used strict ASCII `===` instead of the `normNameHelper` dash-tolerant comparison the rest of the group/layer-lookup tools already use. Same class of bug as the original Bug I in `move_layer_to_group` (fixed 2026-05-29); the fix didn't propagate.
+PATCH bump for one snippet-level silent-no-op bug in `photoshop_create_group`. The 2026-06-04 IMG_1022 session called `create_group(layers=["Warm — 81", "Curves — S-pop", "Vibrance", "Levels — contrast"])` and got back `moved_count: 1` — only `"Vibrance"` (the one name without an em-dash) matched. The other three landed in `not_found` silently because the snippet's `findLayerByName` used strict ASCII `===` instead of the `normNameHelper` dash-tolerant comparison the rest of the group/layer-lookup tools already use.
 
 ### Fixed
 
-- **`photoshop_create_group` with a `layers` list** now matches layer names containing em-dash (U+2014), en-dash (U+2013), or other Unicode dash variants when the caller passes ASCII hyphen-minus (or vice versa), and folds case + collapses whitespace runs the same way `photoshop_move_layer_to_group` and `photoshop_select_layer` do. Names that previously fell into `not_found` silently now move into the group correctly.
+- **Group memberships handle Unicode dash variants.** Creating a group from a list of layer names now matches em-dash, en-dash, and ASCII hyphen-minus the same way move and select tools already did.
+  - Tool fixed: `photoshop_create_group` when called with a `layers` list
+  - U+2014 (em-dash), U+2013 (en-dash), and ASCII hyphen-minus all fold to one canonical form
+  - Case + whitespace-run normalization applied consistently across `photoshop_create_group`, `photoshop_move_layer_to_group`, `photoshop_select_layer`
+  - Names that previously fell into `not_found` silently now move into the group correctly
+  - Same class of bug as the original Bug I in `move_layer_to_group` (fixed 2026-05-29); the fix hadn't propagated
 
 ---
 
@@ -40,25 +50,49 @@ This is the "stop shipping fictional descriptors" release. Every fix is verified
 
 ### Added
 
-- **`photoshop_create_clipping_mask`** and **`photoshop_release_clipping_mask`** (`'dev'` tier) — standalone primitives for clipping the active layer to the layer below (or releasing the clip). The clipping behavior previously lived only inline inside `photoshop_add_adjustment_layer`'s `clip_to_below` flag; standalone tools now cover the case where you want to clip any layer, not just an adjustment-layer being created. Dispatches the verified `groupEvent` / `ungroupEvent` stringIDs (aliased to `GrpL` / `Ungr` charIDs). Distinct from `photoshop_ungroup` which dissolves a LayerSet via the unrelated `ungroupLayersEvent`.
-- **`photoshop_place_image`** gains optional `width_percent` and `height_percent` for non-uniform scale of the placed Smart Object. Omit to keep native size (matches PS UI default).
+- **Place Image gets non-uniform scale.** Optional width and height percent parameters let you stretch a placed Smart Object instead of being locked to its native size.
+  - New `width_percent` and `height_percent` parameters on `photoshop_place_image`
+  - Omit to keep native size (matches PS UI default)
+
+#### New tools landing as 'dev' tier (excluded from CE + Pro shipped bundles)
+
+- **`photoshop_create_clipping_mask` and `photoshop_release_clipping_mask`** — standalone primitives for clipping the active layer to the layer below (or releasing the clip). The clipping behavior previously lived only inline inside `photoshop_add_adjustment_layer`'s `clip_to_below` flag; standalone tools now cover the case where you want to clip any layer, not just an adjustment-layer being created. Dispatches the verified `groupEvent` / `ungroupEvent` stringIDs (aliased to `GrpL` / `Ungr` charIDs). Distinct from `photoshop_ungroup` which dissolves a LayerSet via the unrelated `ungroupLayersEvent`.
 - **`photoshop_apply_shadows_highlights`** gains `black_clip` and `white_clip` parameters (PS dialog default `0.01` for both). Previously hardcoded; advanced users can now bias toward more contrast at the cost of detail in the extreme tones.
 
 ### Fixed
 
-- **`photoshop_add_adjustment_layer` `type=levels`** — three silent-no-op drifts in the PS 27.x post-Mk `setd` workaround. Pre-audit emission used `putEnumerated` for the `Chnl` reference (PS wants `putReference` to the composite), separate `Inpt`+`Wht ` keys (PS wants ONE `Inpt` key holding a 2-int list `[black, white]`), and `putInteger(gamma * 100)` for the gamma value (PS wants `putDouble(gamma)`). User-set black/white/gamma values were silently dropped or coerced wrong. Same class of silent-no-op as the Bundle Q hotfix 5 bugs. Verified against `src/spec/ps27/adjustments/levels.ts`.
-- **`photoshop_add_adjustment_layer` `type=invert`** — Mk path now uses `using.putClass(Type, Invr)` with no inner type descriptor, matching the captured PS UI form. Pre-audit emission used `putObject` with a `presetKindDefault` inner descriptor — silently coerced PS into an unexpected creation path.
+- **Levels adjustment honors black/white/gamma on PS 27.x.** Three silent-no-op drifts in the post-create descriptor were dropping user-set tonal values; the fix means setting input black / white / gamma actually takes effect.
+  - Tool fixed: `photoshop_add_adjustment_layer` with `type=levels`
+  - Pre-audit emission used `putEnumerated` for the `Chnl` reference (PS wants `putReference` to the composite)
+  - Used separate `Inpt`+`Wht ` keys (PS wants ONE `Inpt` key holding a 2-int list `[black, white]`)
+  - Used `putInteger(gamma * 100)` for gamma (PS wants `putDouble(gamma)`)
+  - Same class of silent-no-op as the Bundle Q hotfix 5 bugs; verified against `src/spec/ps27/adjustments/levels.ts`
+- **Invert adjustment layer uses the captured PS UI form.** Mk path now uses `putClass(Type, Invr)` with no inner descriptor; previously coerced PS into an unexpected creation path with `putObject` + `presetKindDefault`.
+  - Tool fixed: `photoshop_add_adjustment_layer` with `type=invert`
+- **Outer Glow range slider type fix.** The Range slider on Outer Glow layer styles was sending a putInteger where PS wants a unitDouble percentUnit, silently default-falling back to the wrong behavior.
+  - Tool fixed: `photoshop_add_layer_style` with `style=outer_glow`
+  - `Inpr` is `putUnitDouble` percentUnit, NOT `putInteger`
+  - `ShdN` (shading noise) added as a required descriptor key alongside the existing `Inpr` slot
+  - Same type-drift class as the simultaneously-fixed Smart Sharpen `Amnt`
+
+#### Fixes to dev-tier tools (excluded from CE + Pro shipped bundles)
+
 - **`photoshop_apply_smart_sharpen`** — five simultaneous fixes against the 2026-06-03 capture: (1) sub-object class is `adaptCorrectTones` (no "ive" infix; the typo silently dropped both Shadows and Highlights tab params); (2) root `Amnt` and `noiseReduction` are `putUnitDouble` percentUnit (not `putInteger`); (3) sub-object outer keys are charID `sdwM`/`hglM` (not stringIDs `shadowMode`/`highlightMode`); (4) inner `Amnt`/`Wdth` are `putUnitDouble` percentUnit, inner `Rds ` stays `putInteger`; (5) `blur` key + `GsnB`/`LnsB`/`MtnB` enum values are charIDs. The shadows/highlights typo had been shipping completely broken since Bundle P.
 - **`photoshop_apply_lens_blur`** — full rewrite from forum-lore stringIDs to the captured `Bokh` (Bokeh) charID event with the `Bk*`/`Bt*`/`Be*` family. Iris shape strings (`hexagon` etc.) map to numeric-suffixed `BeS3`-`BeS8`; noise distribution to `BeNu`/`BeNg`; radius and specular brightness use `putDouble`. The pre-audit snippet was complete CS6-era fiction — every stringID (`lensBlur`, `radius`, `irisShape`, `noiseDistribution`, `depthMap`, etc.) was wrong against PS 27.x. Verified against `src/spec/ps27/filters/lens-blur.ts`.
-- **`photoshop_select_color_range`** (`'dev'` tier) — input sRGB now converted to CIE Lab via the standard sRGB D65 → Bradford → D50 → Lab pipeline before emission, and the descriptor uses `LbCl` (Lab Color) with `Lmnc`/`A   `/`B   ` doubles plus the previously-omitted `colorModel: 0` integer (selects the "sampled colors Lab" algorithm). Pre-audit snippet sent `RGBC` with `Rd  `/`Grn `/`Bl  ` doubles and no `colorModel` — possible silent no-op or coerced fallback to a less-precise matching algorithm. Tool stays at `'dev'` tier pending live verification per the dev-default-then-promote gate.
+- **`photoshop_select_color_range`** — input sRGB now converted to CIE Lab via the standard sRGB D65 → Bradford → D50 → Lab pipeline before emission, and the descriptor uses `LbCl` (Lab Color) with `Lmnc`/`A   `/`B   ` doubles plus the previously-omitted `colorModel: 0` integer (selects the "sampled colors Lab" algorithm). Pre-audit snippet sent `RGBC` with `Rd  `/`Grn `/`Bl  ` doubles and no `colorModel` — possible silent no-op or coerced fallback to a less-precise matching algorithm. Tool stays at dev tier pending live verification per the dev-default-then-promote gate.
 - **`photoshop_apply_layer_mask`** — migrated from the legacy top-level `Aply` event to the modern captured form `Dlt Chnl + Aply: true` boolean. Both forms reach the same end state on PS 27.x; the captured form locks in the modern dispatch and inoculates against a future PS deprecating the standalone `Aply` event.
-- **`photoshop_add_layer_style` (`outer_glow`)** — `Inpr` (Range slider) is `putUnitDouble` percentUnit, NOT `putInteger`. Same type-drift class as the just-fixed Smart Sharpen `Amnt` — would have silently default-fallen back. Plus `ShdN` (shading noise) added as a required descriptor key alongside the existing `Inpr` slot.
 
 ### Changed
 
+- **Layer styles emit the full UI-captured descriptor.** Optional fields the PS UI exposes are now included at PS defaults so the emitted layer style matches what PS would write from the menu.
+  - Tool affected: `photoshop_add_layer_style` (drop_shadow, stroke, outer_glow variants)
+  - Adds `present`, `showInDialog`, `layerConceals`, `overprint` at PS-default values
+  - Public input schema is unchanged — pure descriptor completeness
+
+#### Dev-tier refinements (excluded from CE + Pro shipped bundles)
+
 - **`photoshop_apply_lens_blur` tool description** is now honest about the depth-map limitation: the `depth_source` / `focal_distance` / `invert_depth` parameters echo to the result payload but do not vary the emitted Photoshop descriptor. Depth-map-driven blur is pending a second ScriptListener capture before promotion; until then, the captured `BeIt` / `BeCm` defaults always emit and the filter runs against the layer's full alpha.
 - **`photoshop_apply_lens_blur` iris_shape parameter** is now strict — unknown values throw a clear error instead of silently falling back to `hexagon`.
-- **`photoshop_add_layer_style`** (drop_shadow, stroke, outer_glow) emits the optional descriptor fields PS exposes in the UI capture (`present`, `showInDialog`, `layerConceals`, `overprint`) at PS defaults. The tool's public input schema is unchanged; the changes are descriptor completeness so the emitted layer-style matches what PS would write from the menu.
 
 ---
 

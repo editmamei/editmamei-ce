@@ -48,7 +48,18 @@ const BLOCKED = [
   'photoshop_apply_equalize',
 ];
 
-const SCAN_ROOTS = ['README.md', 'CHANGELOG.md', 'CONTRIBUTING.md', 'SECURITY.md', 'docs'];
+// NOTE on CHANGELOG.md scope (2026-06-05): CHANGELOG.md is intentionally
+// excluded from this scan. It's auto-generated from the private-source
+// CHANGELOG via Editmamei/scripts/sync-changelogs.ts, which has its OWN
+// leak guard at the boundary that matters (the editmamei-web landing-page
+// cards). The CE changelog is honest release-history disclosure — bullets
+// under H4 subsections labeled "...dev tier..." or "Fixes to dev-tier
+// tools..." mention tool names in context as "these were added/fixed but
+// stayed at dev tier." That's the OPPOSITE of marketing tipping; the
+// reader knows the tools aren't in the shipped surface. Re-adding
+// CHANGELOG.md to this scan would require the sync script to strip every
+// such bullet from CE, which loses the disclosure value.
+const SCAN_ROOTS = ['README.md', 'CONTRIBUTING.md', 'SECURITY.md', 'docs'];
 
 const EXCLUDED_EXTS = new Set([
   '.png',
