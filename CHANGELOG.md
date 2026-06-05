@@ -12,6 +12,36 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ---
 
+## [0.4.0] — 2026-06-04
+
+MINOR bump for the 2026-06-03 AM Descriptor Audit remediation pass: six HIGH-severity silent-no-op bug fixes in `src/api/extendscript.ts`, two new clipping-mask tools at `'dev'` tier, schema-completeness additions to several existing tools, and seven new snippet-vs-spec tests pinning the fixes against the V1 AM Event Library specs.
+
+This is the "stop shipping fictional descriptors" release. Every fix is verified against PS 27.7.0 Windows ScriptListener ground truth captured 2026-06-03 and codified in the typed specs under `src/spec/ps27/`. The same test framework that proves these fixes will fail at PR-time if any future refactor silently reverts them.
+
+### Added
+
+- **`photoshop_create_clipping_mask`** and **`photoshop_release_clipping_mask`** (`'dev'` tier) — standalone primitives for clipping the active layer to the layer below (or releasing the clip). The clipping behavior previously lived only inline inside `photoshop_add_adjustment_layer`'s `clip_to_below` flag; standalone tools now cover the case where you want to clip any layer, not just an adjustment-layer being created. Dispatches the verified `groupEvent` / `ungroupEvent` stringIDs (aliased to `GrpL` / `Ungr` charIDs). Distinct from `photoshop_ungroup` which dissolves a LayerSet via the unrelated `ungroupLayersEvent`.
+- **`photoshop_place_image`** gains optional `width_percent` and `height_percent` for non-uniform scale of the placed Smart Object. Omit to keep native size (matches PS UI default).
+- **`photoshop_apply_shadows_highlights`** gains `black_clip` and `white_clip` parameters (PS dialog default `0.01` for both). Previously hardcoded; advanced users can now bias toward more contrast at the cost of detail in the extreme tones.
+
+### Fixed
+
+- **`photoshop_add_adjustment_layer` `type=levels`** — three silent-no-op drifts in the PS 27.x post-Mk `setd` workaround. Pre-audit emission used `putEnumerated` for the `Chnl` reference (PS wants `putReference` to the composite), separate `Inpt`+`Wht ` keys (PS wants ONE `Inpt` key holding a 2-int list `[black, white]`), and `putInteger(gamma * 100)` for the gamma value (PS wants `putDouble(gamma)`). User-set black/white/gamma values were silently dropped or coerced wrong. Same class of silent-no-op as the Bundle Q hotfix 5 bugs. Verified against `src/spec/ps27/adjustments/levels.ts`.
+- **`photoshop_add_adjustment_layer` `type=invert`** — Mk path now uses `using.putClass(Type, Invr)` with no inner type descriptor, matching the captured PS UI form. Pre-audit emission used `putObject` with a `presetKindDefault` inner descriptor — silently coerced PS into an unexpected creation path.
+- **`photoshop_apply_smart_sharpen`** — five simultaneous fixes against the 2026-06-03 capture: (1) sub-object class is `adaptCorrectTones` (no "ive" infix; the typo silently dropped both Shadows and Highlights tab params); (2) root `Amnt` and `noiseReduction` are `putUnitDouble` percentUnit (not `putInteger`); (3) sub-object outer keys are charID `sdwM`/`hglM` (not stringIDs `shadowMode`/`highlightMode`); (4) inner `Amnt`/`Wdth` are `putUnitDouble` percentUnit, inner `Rds ` stays `putInteger`; (5) `blur` key + `GsnB`/`LnsB`/`MtnB` enum values are charIDs. The shadows/highlights typo had been shipping completely broken since Bundle P.
+- **`photoshop_apply_lens_blur`** — full rewrite from forum-lore stringIDs to the captured `Bokh` (Bokeh) charID event with the `Bk*`/`Bt*`/`Be*` family. Iris shape strings (`hexagon` etc.) map to numeric-suffixed `BeS3`-`BeS8`; noise distribution to `BeNu`/`BeNg`; radius and specular brightness use `putDouble`. The pre-audit snippet was complete CS6-era fiction — every stringID (`lensBlur`, `radius`, `irisShape`, `noiseDistribution`, `depthMap`, etc.) was wrong against PS 27.x. Verified against `src/spec/ps27/filters/lens-blur.ts`.
+- **`photoshop_select_color_range`** (`'dev'` tier) — input sRGB now converted to CIE Lab via the standard sRGB D65 → Bradford → D50 → Lab pipeline before emission, and the descriptor uses `LbCl` (Lab Color) with `Lmnc`/`A   `/`B   ` doubles plus the previously-omitted `colorModel: 0` integer (selects the "sampled colors Lab" algorithm). Pre-audit snippet sent `RGBC` with `Rd  `/`Grn `/`Bl  ` doubles and no `colorModel` — possible silent no-op or coerced fallback to a less-precise matching algorithm. Tool stays at `'dev'` tier pending live verification per the dev-default-then-promote gate.
+- **`photoshop_apply_layer_mask`** — migrated from the legacy top-level `Aply` event to the modern captured form `Dlt Chnl + Aply: true` boolean. Both forms reach the same end state on PS 27.x; the captured form locks in the modern dispatch and inoculates against a future PS deprecating the standalone `Aply` event.
+- **`photoshop_add_layer_style` (`outer_glow`)** — `Inpr` (Range slider) is `putUnitDouble` percentUnit, NOT `putInteger`. Same type-drift class as the just-fixed Smart Sharpen `Amnt` — would have silently default-fallen back. Plus `ShdN` (shading noise) added as a required descriptor key alongside the existing `Inpr` slot.
+
+### Changed
+
+- **`photoshop_apply_lens_blur` tool description** is now honest about the depth-map limitation: the `depth_source` / `focal_distance` / `invert_depth` parameters echo to the result payload but do not vary the emitted Photoshop descriptor. Depth-map-driven blur is pending a second ScriptListener capture before promotion; until then, the captured `BeIt` / `BeCm` defaults always emit and the filter runs against the layer's full alpha.
+- **`photoshop_apply_lens_blur` iris_shape parameter** is now strict — unknown values throw a clear error instead of silently falling back to `hexagon`.
+- **`photoshop_add_layer_style`** (drop_shadow, stroke, outer_glow) emits the optional descriptor fields PS exposes in the UI capture (`present`, `showInDialog`, `layerConceals`, `overprint`) at PS defaults. The tool's public input schema is unchanged; the changes are descriptor completeness so the emitted layer-style matches what PS would write from the menu.
+
+---
+
 ## [0.3.1] — 2026-06-03
 
 PATCH bump for cross-repo changelog sync infrastructure. No user-visible
@@ -192,7 +222,8 @@ license activation flow land in v1.0.0.
 
 ---
 
-[Unreleased]: https://github.com/editmamei/editmamei-ce/compare/v0.3.1...HEAD
+[Unreleased]: https://github.com/editmamei/editmamei-ce/compare/v0.4.0...HEAD
+[0.4.0]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.4.0
 [0.3.1]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.3.1
 [0.3.0]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.3.0
 [0.2.0]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.2.0
