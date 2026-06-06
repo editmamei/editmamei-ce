@@ -12,6 +12,32 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ---
 
+## [0.4.3] — 2026-06-05
+
+PATCH bump for two histogram-tool bugs found in the same 2026-06-04 IMG_1022 session NDJSON that surfaced v0.4.1 + v0.4.2. The schema advertised features that hadn't been implemented; the snippet now actually delivers them.
+
+### Fixed
+
+- **Luminosity histograms now work.** The schema's `channel: 'luminosity'` enum value was advertised but every call failed with "Channel not found: luminosity" because the snippet did a name lookup in `doc.channels` (which on RGB documents only contains Red/Green/Blue).
+  - Tool fixed: `photoshop_get_histogram`
+  - Dispatched per document mode: Lab → Lightness channel (exact), Grayscale → Gray channel (exact), RGB → synthesized from R+G+B via Rec.709 weighted bin sums (0.2126·R + 0.7152·G + 0.0722·B)
+  - For RGB the mean is exact (linearity of expectation); stdev and median are approximations because per-pixel R/G/B values are correlated in real images
+  - The result's `channel` field annotates which path landed, e.g. `'luminosity (Lab Lightness)'`, `'luminosity (Grayscale)'`, `'luminosity (Rec.709 approximation from RGB)'`
+  - Terminal error when no fallback channels exist (Indexed, Multichannel without RGB primitives) names the actual channels present so the LLM can pick a real one
+- **Composite histograms no longer fail after an adjustment layer is added.** `doc.histogram` returns "The requested property does not exist" in PS 27.x whenever the active layer is an adjustment, fill, or shape layer — meaning every composite read after `add_adjustment_layer` failed.
+  - Tool fixed: `photoshop_get_histogram` with default `channel: 'composite'`
+  - Fallback chain: (1) try `doc.histogram`, (2) save active layer → switch to a pixel layer (Background preferred, else first NORMAL layer in tree) → retry → restore active, (3) synthesize composite from Lab Lightness / Gray channel / RGB channel-average
+  - The result's `channel` field encodes which path landed (e.g. `'composite (doc-histogram-after-active-switch)'`, `'composite (rgb-channel-average)'`) so the caller can tell the synthesis was used
+  - Active layer is restored unconditionally before any fallback path runs — no caller-observable state change
+
+### Changed
+
+- **Histogram tool description now matches reality.** Spells out the per-mode luminosity dispatch, the Rec.709 approximation on RGB, and the adjustment-layer composite-recovery so the LLM can pick the right channel without guessing.
+  - Tool affected: `photoshop_get_histogram`
+  - `channel` input field description rewritten from a one-line summary to a per-enum-value breakdown
+
+---
+
 ## [0.4.2] — 2026-06-05
 
 PATCH bump for a latent template-literal-in-comment bug in `photoshop_move_layer_to_group` that had been broken at runtime on every call since the comment was added. Found by reading the session NDJSON for the IMG_1022 grade — the tool's `error` field captured the exact PS-side syntax error.
@@ -276,7 +302,8 @@ license activation flow land in v1.0.0.
 
 ---
 
-[Unreleased]: https://github.com/editmamei/editmamei-ce/compare/v0.4.2...HEAD
+[Unreleased]: https://github.com/editmamei/editmamei-ce/compare/v0.4.3...HEAD
+[0.4.3]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.4.3
 [0.4.2]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.4.2
 [0.4.1]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.4.1
 [0.4.0]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.4.0
