@@ -40,9 +40,23 @@ Officially:
 
 Any MCP-compatible client should work — Editmamei is a standard MCP stdio server. `editmamei install` auto-configures Claude Desktop; for Cursor, Claude Code, or other clients, the [manual configuration steps](installation.md#manual-configuration) show what to put in your client's config.
 
+### Which AI client should I use?
+
+All three supported clients work with Editmamei. The right one for you depends on the kind of work you do.
+
+**Claude Desktop** is the easiest to set up and the most familiar if you've used Claude on the web. It's a great fit for everyday edits: a single hero shot to grade, a portrait to retouch, a quick template to apply. Most one-off and short-session work runs comfortably here.
+
+**Claude Code** is a terminal-based client. It takes more setup, but it has a much larger working memory for the conversation, which keeps it fast when a session runs long. Real-estate batches, wedding sets, multi-image template authoring, and any workflow that runs through dozens of edits in a row stay responsive on Code in ways Desktop currently cannot match. If you regularly notice the AI slowing down as you keep editing, switching to Code is the fix.
+
+**Cursor** runs Editmamei the same way Claude Desktop does. Use it if it's already part of your workflow.
+
+If you're not sure: start on Desktop. Move to Code the first time you feel a session getting slow. The [getting-started guide](getting-started.md#when-the-ai-starts-feeling-slow) covers why that happens, and [installation.md](installation.md#claude-code) covers the Code setup.
+
 ### Which Photoshop versions are supported?
 
-Photoshop 2022 or later. Photoshop 2024+ is recommended because some tools (Select Subject, Select Sky, Remove Background) depend on Adobe Sensei features that are most reliable in recent versions.
+**Photoshop 2026 (internal version 27.x).** That's the only Photoshop version Editmamei has been verified against — every ActionManager descriptor we emit was captured against PS 27.x on Windows and macOS.
+
+Earlier versions (Photoshop 2025 / 2024 / 2023 / 2022) may work — the DOM-level APIs and most AM events are stable across recent majors — but they're unverified. Adobe is known to rotate event IDs between major versions, and a tool that string-match-tests fine in the source can still silent-no-op against a different PS major. The auto-detector still finds older installs so you can try, but failing tools on unsupported versions are a known unsupported-version risk, not a bug.
 
 ### Does Editmamei work on Linux?
 
@@ -89,6 +103,15 @@ No — not by Editmamei itself. Editmamei writes a local session log to `~/.edit
 ### Can I run Editmamei against multiple Photoshop versions installed side by side?
 
 Yes. Editmamei auto-detects Photoshop, and you can pin a specific install via the `PHOTOSHOP_PATH` env var in your MCP client config. See [installation.md](installation.md#optional-pin-a-specific-photoshop-install).
+
+### Why does the AI take longer between edits as my session gets longer?
+
+AI assistants have a working memory for the conversation, and as it grows, the AI takes longer to reason about each next step. Short sessions stay snappy. A session that runs into the hundreds of edits will see noticeable gaps build up between asking for an edit and seeing the next step happen.
+
+This is a property of the AI client, not of Editmamei or Photoshop. Two things help:
+
+1. **Start a fresh conversation when you switch projects.** Closing a session and starting a new one resets the working memory. If you've been on one image for an hour and want to move to the next, a new chat is faster than continuing the old one.
+2. **Use Claude Code for sustained work.** Claude Code has a much larger working memory, which means it stays fast across hundreds of edits in one session. See [Which AI client should I use?](#which-ai-client-should-i-use) for when each client makes sense.
 
 ---
 

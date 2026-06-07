@@ -14,7 +14,7 @@ With Photoshop open and the MCP client you want to use restarted (any of Claude 
 
 The AI should call `photoshop_ping` and `photoshop_get_version`, and you'll see something like:
 
-> Yes — Photoshop is connected. You're running Photoshop 2025 (version 26.0.0) on Windows.
+> Yes — Photoshop is connected. You're running Photoshop 2026 (version 27.7.0) on Windows.
 
 If you instead see "tool not found" or a connection error, jump to [Troubleshooting](#troubleshooting) at the bottom of this page.
 
@@ -78,6 +78,21 @@ Full workflow examples and editing patterns at [editmamei.com/docs](https://edit
 
 ---
 
+## When the AI starts feeling slow
+
+AI assistants have a working memory for the conversation. Short sessions stay snappy. Once a conversation has run through a lot of edits, previews, and back-and-forth, that memory fills up and the AI takes longer between each step. You'll notice it as gaps of thirty seconds or more between asking for an edit and seeing the next step happen.
+
+This isn't an Editmamei limit and it isn't a Photoshop limit — it's a property of the AI client itself.
+
+Two things help, in order:
+
+1. **Start a fresh conversation when you switch projects.** Closing a session and starting a new one resets the working memory. If you've been on one image for an hour and want to move to the next, a new chat is faster than continuing the old one.
+2. **Use Claude Code for sustained work.** Claude Code has a much larger working memory, which means it stays fast across hundreds of edits in one session. Setup is a one-time terminal install; once it's running, it works the same way Desktop does — you type, the AI edits, Photoshop carries it out.
+
+If you frequently work in long batches (real-estate sets, wedding selects, template authoring), Code is the recommended client. The [installation guide](installation.md#claude-code) covers the setup, and the [FAQ](faq.md#which-ai-client-should-i-use) compares the three supported clients side by side.
+
+---
+
 ## Per-user data
 
 Editmamei writes per-user data to `~/.editmamei/`:
@@ -104,9 +119,11 @@ Your MCP client didn't pick up the Editmamei registration. Check:
 
 If you hit a Photoshop operation Editmamei doesn't have a dedicated tool for, the AI can fall back to `photoshop_execute_script` — it sends an ExtendScript snippet directly to Photoshop and returns the result. This is the safety valve for edge cases the dedicated tool surface hasn't grown into yet; whether the AI reaches for it on its own depends on the AI client. If the AI seems stuck on "no tool for this," ask it to use `photoshop_execute_script` explicitly.
 
-### Photoshop 2026 compatibility
+### Photoshop version support
 
-Editmamei works against Photoshop 2022+, with the heaviest testing on 2024-2025. Photoshop 2026 (v27.x) introduced a few descriptor changes that affect some adjustment-layer and selection paths; current Editmamei builds work around the known ones. If you hit a tool that fails only on PS 2026, [open an issue](https://github.com/editmamei/editmamei-ce/issues) — include the output of `editmamei status` and the relevant snippet from `~/.editmamei/sessions/<session-id>.ndjson`.
+Editmamei is tested against **Photoshop 2026 (internal version 27.x)** — that's the only Photoshop version every ActionManager descriptor has been ground-truth captured against. Earlier versions (Photoshop 2025 / 2024 / 2023 / 2022) may work, but they're unverified; Adobe rotates event IDs between major versions and silent-no-op descriptor failures on untested PS majors cannot be ruled out. The auto-detector still finds older installs so you can try.
+
+PS 2026 introduced a few descriptor changes that affected some adjustment-layer and selection paths; current builds work around the known ones. If you hit a tool that fails — on PS 2026 or any other version — [open an issue](https://github.com/editmamei/editmamei-ce/issues) and include the output of `editmamei status` plus the relevant snippet from `~/.editmamei/sessions/<session-id>.ndjson`. Please mention your Photoshop version so we can route the bug correctly.
 
 ### `photoshop_ping` hangs or times out
 
