@@ -7,7 +7,7 @@ Editmamei is distributed as an npm package. The `editmamei install` subcommand d
 ## Requirements
 
 - **Node.js** 20 or later — [nodejs.org](https://nodejs.org/)
-- **Adobe Photoshop** 2022 or later (2024+ recommended for full feature coverage; some selection tools require 2024+)
+- **Adobe Photoshop 2026 (internal version 27.x)** &mdash; the only version Editmamei has been verified against. Earlier majors may work but are unverified; see [faq.md](faq.md#which-photoshop-versions-are-supported) for the rationale.
 - **Operating system:** Windows 10/11 or macOS 12+
 - An **MCP-compatible client** — at least one of:
   - [Claude Desktop](https://claude.ai/download)
@@ -64,7 +64,7 @@ Restart your AI client(s) after this completes — config changes only take effe
 - `--photoshop-path <path>` — bake an absolute path to your Photoshop binary into the MCP server entry as the `PHOTOSHOP_PATH` env var, across every detected client. Use when Photoshop is installed somewhere the auto-detector can't find (custom drive letter, side-by-side installs, beta tracks, etc.). Example:
 
   ```bash
-  editmamei install --photoshop-path "D:\\Adobe\\Photoshop 2025\\Photoshop.exe"
+  editmamei install --photoshop-path "D:\\Adobe\\Photoshop 2026\\Photoshop.exe"
   ```
 
   Equivalent to hand-editing `env: { "PHOTOSHOP_PATH": "..." }` into the `editmamei` entry of every config the install touches.
@@ -146,7 +146,7 @@ Editmamei auto-detects Photoshop. If you have multiple versions installed and wa
       "command": "npx",
       "args": ["-y", "editmamei", "serve"],
       "env": {
-        "PHOTOSHOP_PATH": "C:\\Program Files\\Adobe\\Adobe Photoshop 2025\\Photoshop.exe"
+        "PHOTOSHOP_PATH": "C:\\Program Files\\Adobe\\Adobe Photoshop 2026\\Photoshop.exe"
       }
     }
   }
