@@ -66,7 +66,7 @@ Worth being clear about: your AI assistant is a cloud service. When you ask it t
 ## Requirements
 
 - **Node.js** 20 or later
-- **Adobe Photoshop** 2022 or later (2024+ recommended)
+- **Adobe Photoshop 2026** (internal version 27.x) &mdash; earlier versions unverified ([why](docs/faq.md#which-photoshop-versions-are-supported))
 - **Operating system:** Windows 10/11 or macOS 12+
 - An **AI assistant** that speaks MCP, such as Claude Desktop, Cursor, Claude Code, or any other MCP-compatible client
 
