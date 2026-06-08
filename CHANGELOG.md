@@ -12,6 +12,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ---
 
+## [0.5.4] — 2026-06-08
+
+PATCH bump rolling back the v0.5.3 cosmetic optimization in `restoreCompositeChannel` after a macOS PS 27.7 session reproduced the exact bug class v0.5.2 was supposed to close. The optimization saved one undo-history entry per selection-tool call and reintroduced the bug it was protecting against. Trade was wrong.
+
+### Fixed
+
+- **Mask creation no longer fails after a chain of selection tools on macOS Photoshop 27.7.** A fresh-install v0.5.3 Mac session reproduced the original v0.5.2 bug class: the first mask creation in a session worked, but a second attempt after multiple selection tool calls failed with the "command Make not currently available" error. v0.5.3 had added a length-equality short-circuit to skip the channel-restore AM event when the active set was supposedly already on composite — but on macOS the check false-positived after the temp-channel cleanup, so the restore never fired and pollution compounded across the chain. v0.5.4 fires the channel-restore AM event unconditionally, matching v0.5.2 behaviour. The trade-off — one cosmetic "Select RGB Channel" undo entry per selection-tool call — is a small cost; the regression was not.
+  - Tool fixed: `photoshop_create_layer_mask`
+  - Tools that now correctly restore channel state on cleanup: every selection tool (`photoshop_select_subject`, `photoshop_select_sky`, `photoshop_select_color_range`, `photoshop_magic_wand`, `photoshop_select_rectangle`, `photoshop_invert_selection`, `photoshop_feather_selection`, `photoshop_select_all`, `photoshop_deselect`, `photoshop_get_selection_info`), `photoshop_get_selection_preview`, and the adjustment-layer branch of `photoshop_create_layer_mask` — they all run through the shared `restoreCompositeChannel(doc)` helper
+  - Verified by NDJSON: the failing session's tool sequence shows the first `create_layer_mask` succeeding (one selection-tool ahead) and the second failing (four selection-tools chained ahead) — a textbook compounding-pollution signature
+  - The previously-tracked file path `/tmp/editmamei-preview-XXX/preview.jpg` failures from the same session are a separate issue (the preview snippet's saveAs-then-readFile sequence) and tracked as a follow-up; they are unrelated to channel state
+
+---
+
 ## [0.5.3] — 2026-06-07
 
 PATCH bump bundling three changes. Two close out the v0.5.2 channel-pollution audit: the bug class also leaks on the early-exit throw paths of every smart-selection tool, AND the helper that fixes it adds a redundant undo entry on the common case. One adds a long-missing tool the LLM kept burning escape-hatch attempts trying to write by hand.
@@ -408,7 +422,8 @@ license activation flow land in v1.0.0.
 
 ---
 
-[Unreleased]: https://github.com/editmamei/editmamei-ce/compare/v0.5.3...HEAD
+[Unreleased]: https://github.com/editmamei/editmamei-ce/compare/v0.5.4...HEAD
+[0.5.4]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.5.4
 [0.5.3]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.5.3
 [0.5.2]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.5.2
 [0.5.1]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.5.1
