@@ -12,6 +12,21 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ---
 
+## [0.5.8] — 2026-06-08
+
+PATCH bump for the *actual* `photoshop_create_layer_mask` fix on macOS. v0.5.7 fixed the `At` slot of the Make-mask descriptor but kept the wrong class-declaration slot (`desc.putReference(cTID('null'), ref<class=Chnl>)`) — the 2026-06-08 v0.5.7 Mac session still rejected with the same "command Make not currently available" error. The user captured the menu-action via ScriptListener and the captured descriptor uses a *different* shape entirely: `desc.putClass(sTID('new'), sTID('channel'))` directly on the descriptor under a `new` key, with stringIDs throughout. v0.5.8 ships the captured form verbatim and adds regression guards against every previous-wrong-shape we've shipped (Nw-ref, bare At enumerated, null-ref class slot, charID Mk).
+
+### Fixed
+
+- **Mask creation actually works on macOS now.** The previous fix (v0.5.7) corrected one of two structurally wrong slots in the AM descriptor; the other slot — the class-of-thing-to-create declaration — was still in the legacy `null` reference-to-class shape that macOS PS 27.7 strict-mode rejects. The user captured the live menu dispatch via ScriptListener and the captured descriptor uses `desc.putClass(sTID('new'), sTID('channel'))` directly on the outer descriptor, with every key + value as a stringID. The snippet now matches the capture verbatim. The 2026-06-04 spec-audit claim that the `null` / `Nw` class-slot variants were equivalent was a Windows-only observation; macOS is strict.
+  - Tool fixed: `photoshop_create_layer_mask`
+  - Class slot was `desc.putReference(cTID('null'), ref)` where `ref` wrapped `putClass(Chnl)`. New form is `desc.putClass(sTID('new'), sTID('channel'))` — no inner ActionReference, no `null` key
+  - Whole descriptor switched from charIDs to stringIDs (matches the capture). The PS-internal dispatch table for `make` does NOT treat them as fully equivalent on macOS even where it does on Windows
+  - Companion spec files (`src/spec/ps27/masks/create-reveal-all.ts` + `create-reveal-selection.ts`) rewritten to drop the "two equivalent forms" claim and pin the captured shape as canonical
+  - Regression guards in `tests/tools/selection-tools.test.ts` extended: now pins `.not.toContain` against every wrong shape we've shipped — pre-2026-05-30 `Nw`-ref form, pre-v0.5.7 bare `At` enumerated, pre-v0.5.8 `null`-ref class slot AND charID-based `At` reference — plus positive assertions on every captured stringID
+
+---
+
 ## [0.5.7] — 2026-06-08
 
 PATCH bump for the real `photoshop_create_layer_mask` fix on macOS. v0.5.4 rolled back the channel-state optimization on the assumption that channel pollution was the cause; v0.5.6 cleaned up surrounding workflow guidance. A 2026-06-08 Mac session NDJSON proved both were red herrings — the mask call still failed three times in a row, including once with NO active selection (which rules out anything channel-related). Root cause was a real descriptor-shape bug that Windows tolerated and macOS rejected.
@@ -465,7 +480,8 @@ license activation flow land in v1.0.0.
 
 ---
 
-[Unreleased]: https://github.com/editmamei/editmamei-ce/compare/v0.5.7...HEAD
+[Unreleased]: https://github.com/editmamei/editmamei-ce/compare/v0.5.8...HEAD
+[0.5.8]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.5.8
 [0.5.7]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.5.7
 [0.5.6]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.5.6
 [0.5.5]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.5.5
