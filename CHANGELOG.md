@@ -12,6 +12,33 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ---
 
+## [0.7.0] — 2026-06-09
+
+MINOR bump promoting nine dev-tier tools to the shipped surface after live verification across two recent workloads. Six land in `'community'` (the CE workhorse pipeline gains shadow/highlight recovery, smart sharpening, noise reduction, high-pass clarity, equalize, and stamp-visible) and three land in `'pro'` (the Bundle V content-aware retouch trio). Promotion follows the dev-default-then-promote gate from [`docs/20260603-tool-tier-process.md`](docs/20260603-tool-tier-process.md); verification evidence is tracked in [`docs/20260608-tool-usage-tracker.md`](docs/20260608-tool-usage-tracker.md).
+
+### Added
+
+- **Nine dev-tier tools promoted to the shipped surface after live verification.** Six land in the CE workhorse pipeline (a complete tone-recovery → sharpen → noise → stamp finishing chain) and three land in Pro (the Bundle V content-aware retouch trio). Verification evidence tracked in [`docs/20260608-tool-usage-tracker.md`](docs/20260608-tool-usage-tracker.md) and the underlying NDJSON session logs in `~/.editmamei/sessions/`.
+  - **Community (CE) — six promotions, all with strong cinematic-grading-batch evidence:**
+  - `photoshop_apply_smart_sharpen` — 23/23 in the 2026-06-07 batch (session `2026-06-07T12-43-37Z-fc6b.ndjson`); strongest evidence in the cohort
+  - `photoshop_apply_shadows_highlights` — 11/12 effective in the same session; the single "failure" was a correct refusal when the active layer was an adjustment layer (the LLM recovered on the next call)
+  - `photoshop_apply_high_pass` — 11/12 effective, same recovery pattern
+  - `photoshop_apply_reduce_noise` — 1/1 in the cinematic batch (underexposed-room rescue)
+  - `photoshop_stamp_visible` — 2/2 in the 2026-06-09 dev-tier sweep (session `2026-06-09T08-39-42Z-e382.ndjson`); replaces the hand-rolled `execute_script` MrgV+Dplc dispatch pattern that drove ~5 escape-hatch failures in the 2026-06-06 demo session
+  - `photoshop_apply_equalize` — 1/1 in the 2026-06-09 sweep
+  - **Pro — Bundle V content-aware retouch trio** (placed in Pro alongside Sensei-backed `select_subject` / `select_sky` because they're the LLM-facing analogs of Adobe's premium retouching features). All three logged successful first invocations in the 2026-06-09 sweep:
+  - `photoshop_apply_content_aware_fill` — 1/1
+  - `photoshop_apply_patch` — 1/1
+  - `photoshop_apply_content_aware_move` — 1/1
+  - **Held back at dev tier (five tools)** — each is dev-tier pending further evidence, a known PS-side limit, or a snippet-level bug that needs a code change before promotion is safe:
+  - `photoshop_apply_color_lookup` — known PS-side scripting-layer limitation per [`docs/20260603-color-lookup-limitation.md`](docs/20260603-color-lookup-limitation.md)
+  - `photoshop_apply_lens_blur` — 1 success + 1 PS-hanging 30s timeout in the 2026-06-09 sweep that took the session down; root cause not yet established
+  - `photoshop_create_clipping_mask` — 1/1 success but held with its paired `release_clipping_mask`; shipping one half of a create/release pair would leave users in a stuck state
+  - `photoshop_release_clipping_mask` — 0/1, failed with `"The command '<unknown>' is not currently available"` (companion snippet to the working `create_clipping_mask`, so the bug is in the release path specifically)
+  - `photoshop_select_color_range` — snippet still needs the AM-descriptor rewrite per the existing tier-comment note (DOM `selectColorRange` method doesn't exist in modern PS)
+
+---
+
 ## [0.6.0] — 2026-06-09
 
 MINOR bump adding compositional and coordinate overlays to the preview tool. Eight new annotation kinds let the LLM translate visual judgments ("subject is in the lower-left third") into precise pixel coordinates for downstream tool calls, and evaluate composition against canonical photographic frameworks (rule of thirds, golden ratio, golden spiral, diagonals, triangles).
@@ -495,7 +522,8 @@ license activation flow land in v1.0.0.
 
 ---
 
-[Unreleased]: https://github.com/editmamei/editmamei-ce/compare/v0.6.0...HEAD
+[Unreleased]: https://github.com/editmamei/editmamei-ce/compare/v0.7.0...HEAD
+[0.7.0]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.7.0
 [0.6.0]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.6.0
 [0.5.8]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.5.8
 [0.5.7]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.5.7
