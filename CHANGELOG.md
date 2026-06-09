@@ -12,6 +12,21 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ---
 
+## [0.6.0] — 2026-06-09
+
+MINOR bump adding compositional and coordinate overlays to the preview tool. Eight new annotation kinds let the LLM translate visual judgments ("subject is in the lower-left third") into precise pixel coordinates for downstream tool calls, and evaluate composition against canonical photographic frameworks (rule of thirds, golden ratio, golden spiral, diagonals, triangles).
+
+### Added
+
+- **Preview overlays gain compositional and coordinate guides.** Eight new annotation kinds make it easy for the LLM to translate visual judgments into precise pixel coordinates and to evaluate composition against canonical photographic frameworks like the rule of thirds and the golden spiral.
+  - The `photoshop_get_preview` `annotations` array now accepts `type: "grid"` with four styles — `every` (regular spacing with `spacing_px`), `thirds` (rule-of-thirds 3x3), `quarters` (center crosshair), `phi` (golden-ratio analog of thirds at 0.382 / 0.618).
+  - Plus `type: "composition"` with four styles — `diagonals` (corner-to-corner X), `triangles` (golden triangles composition), `fibonacci_grid` (nested golden-ratio rectangles), `golden_spiral` (fibonacci_grid plus the iconic spiral curve). Each composition style supports `orientation_corner` ∈ {`tl`,`tr`,`bl`,`br`} to flip the origin.
+  - Dispatcher defensively validates the style + corner enums per-annotation and clamps `spacing_px` to the 10-4000 range — the underlying `validateArgs` helper doesn't recurse into array items today, so out-of-range values would otherwise reach the ExtendScript and a `spacing_px = 0` would produce an infinite loop. The per-type validation + clamp is the workaround until validateArgs gets array-recursion support.
+  - 14 new tests pin the dispatcher translation, the defaults (`drawGrid("thirds", 50)` and `drawComposition("golden_spiral", "tl")`), every style emission, the mismatched-style fallbacks (passing a grid style to a composition annotation falls back to `golden_spiral` and vice versa), the spacing clamp at zero/negative input, and the new ExtendScript drawing primitives (`drawLine`, `drawGrid`, `drawArc`, `drawComposition`, `drawFibonacciOverlay`).
+  - **Known limit on non-golden aspect ratios**: the spiral algorithm uses fixed cyclic subdivision (`tl → tr → br → bl`) which produces a perfectly-continuous spiral on a true golden rectangle (1.618:1). On arbitrary canvases (4:3, 16:9, 1:1) the squares still place correctly but consecutive arcs can show small discontinuities at iteration boundaries — inherent to the fixed-cycle rotation, not a bug. Documented in the inline ExtendScript comment.
+
+---
+
 ## [0.5.8] — 2026-06-08
 
 PATCH bump for the *actual* `photoshop_create_layer_mask` fix on macOS. v0.5.7 fixed the `At` slot of the Make-mask descriptor but kept the wrong class-declaration slot (`desc.putReference(cTID('null'), ref<class=Chnl>)`) — the 2026-06-08 v0.5.7 Mac session still rejected with the same "command Make not currently available" error. The user captured the menu-action via ScriptListener and the captured descriptor uses a *different* shape entirely: `desc.putClass(sTID('new'), sTID('channel'))` directly on the descriptor under a `new` key, with stringIDs throughout. v0.5.8 ships the captured form verbatim and adds regression guards against every previous-wrong-shape we've shipped (Nw-ref, bare At enumerated, null-ref class slot, charID Mk).
@@ -480,7 +495,8 @@ license activation flow land in v1.0.0.
 
 ---
 
-[Unreleased]: https://github.com/editmamei/editmamei-ce/compare/v0.5.8...HEAD
+[Unreleased]: https://github.com/editmamei/editmamei-ce/compare/v0.6.0...HEAD
+[0.6.0]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.6.0
 [0.5.8]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.5.8
 [0.5.7]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.5.7
 [0.5.6]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.5.6
