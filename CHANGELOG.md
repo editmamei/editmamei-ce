@@ -12,6 +12,40 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ---
 
+## [0.8.5] — 2026-06-11
+
+PATCH bump: Templates roadmap Phase 1 — the template system shifts from "replay
+script" to "goal-oriented recipe." Authoring states the doctrine up front, apply
+leads with assess-first/re-derive guidance, and saves are linted. No new tools
+and no input-schema changes; the save tool gains a non-blocking `warnings`
+output field.
+
+### Added
+
+- **Saving a template now flags issues against the authoring doctrine.** A template save is checked for missing structure and copied-in scripting or fixed geometry, and any problems come back as warnings — the save still succeeds, so you can fix and re-save in the same session.
+  - `photoshop_template_save` gains a `warnings: string[]` output field (also in `structuredContent` + the human-readable text); warn-don't-block by design
+  - `src/templates/template-lint.ts` `lintTemplateMarkdown(md)` checks required frontmatter keys, required sections, and red-flag content (raw `executeAction` / `charIDToTypeID` / `stringIDToTypeID`, `execute_script`, environment-bug workarounds, absolute pixel rectangles)
+
+### Changed
+
+- **Templates are now authored and applied as goal-oriented recipes, not replay scripts.** A template captures the *approach* to a look and adapts it to each new photo, instead of replaying one photo's exact numbers — so the same template produces a consistent result across different images.
+  - `photoshop_template_create_evidence` returns the authoring doctrine verbatim (`AUTHORING_DOCTRINE` in `src/templates/authoring-doctrine.ts`): the north star, the three-tier Binding/Reference/Free authority model, objective-first steps, the bans, and the checkable-exit-criteria rules
+  - `photoshop_template_apply` leads its response with assess-first / re-derive-per-photo guidance before the recipe body (`APPLY_GUIDANCE` in `src/tools/template-tools.ts`)
+  - `photoshop_overview`'s Templates bullet and the editmamei skill's Templates section carry the same "binds outcomes, not steps" frame; all kept tier-agnostic (a future template-verify tool is referenced only conditionally)
+
+---
+
+## [0.8.4] — 2026-06-10
+
+### Security
+
+- **Captured tool results in the session log are now sanitized before writing.** The opt-in full-result capture now applies the same privacy discipline as arguments: inline image payloads become size markers, home-directory paths are redacted, and long strings are truncated.
+  - `EDITMAMEI_LOG_RESULTS=1` capture routes through `elideImagePayloads` + the args sanitizer in `src/utils/session-log.ts`
+  - A single `photoshop_get_preview` no longer writes hundreds of KB of base64 per captured line
+  - `result_bytes` still measures the raw pre-elision result, so size analysis is unaffected
+
+---
+
 ## [0.8.3] — 2026-06-10
 
 PATCH bump: session-log schema v2 enrichment (Phase 2a). Adds structured meta lines, per-call sequence numbers, retry detection, result-size accounting, context-scalar hoisting, and error classification to the NDJSON telemetry. No LLM-facing tool surface change.
@@ -602,7 +636,9 @@ license activation flow land in v1.0.0.
 
 ---
 
-[Unreleased]: https://github.com/editmamei/editmamei-ce/compare/v0.8.3...HEAD
+[Unreleased]: https://github.com/editmamei/editmamei-ce/compare/v0.8.5...HEAD
+[0.8.5]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.8.5
+[0.8.4]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.8.4
 [0.8.3]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.8.3
 [0.8.2]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.8.2
 [0.8.1]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.8.1
