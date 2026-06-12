@@ -12,6 +12,54 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ---
 
+## [0.11.0] — 2026-06-12
+
+Templates roadmap Phase 3 (recall) + Go sidecar migration Phase 0 (vertical
+slice — mechanism proven; handlers not yet flipped, runtime behavior
+unchanged).
+
+### Added
+
+- **Template sections can be re-read cheaply late in a session.** When the template text is tens of thousands of tokens back in a long edit, one call re-surfaces just the binding tier — the exit criteria by default — as text only, with no images and no full recipe reload.
+  - `photoshop_template_recall(name, section?)` — `'community'` per the roadmap's ride-along clause: pure filesystem read (no ExtendScript), fully unit-covered, live evidence in the release-run transcript
+  - Sections: `exit_criteria` (default), `tune`, `fixed`, `intent`, `signature` (returns signature.json)
+  - Apply guidance + the Claude skill now point at recall for late-session re-reads; `extractSection`/`readTemplateMd` added to template storage
+
+---
+
+## [0.10.0] — 2026-06-12
+
+### Added
+
+- **Template verification now ships in every edition.** After applying a template, the document can be measured against the template's saved style signature — per-assertion pass/fail with a corrective steer for each miss — so "matches the look" is checked objectively before declaring done.
+  - `photoshop_template_verify` promoted `'dev'` → `'community'` after live verification (Windows, PS 2026): exemplar after-state passed both predicates (R−B = 100 ≥ 20; luminosity median 120 in 100–160 band), a cool regrade failed exactly the look predicate with the correct steer, transcript at `~/.editmamei/live-smoke/2026-06-12T08-48-14Z-31a3/`
+  - `photoshop_template_apply` guidance now names the verify tool directly (previously gated phrasing, pre-promotion)
+  - README gains the `photoshop_template_verify` section; sibling leak-guard blocklists re-synced (name removed)
+
+---
+
+## [0.9.0] — 2026-06-11
+
+Templates roadmap Phase 2 (signatures + verification). Built in parallel
+with the Go sidecar migration under its freeze rules: zero new ExtendScript
+snippets (verification composes existing selection + histogram snippets);
+the evaluator in `src/templates/signature.ts` is a pure function with no
+tool-layer imports so it can lift into the compiled sidecar later.
+
+### Added
+
+- **Templates can now carry a machine-checkable style signature.** When saving a template, the author can attach a compact set of relative style assertions — channel orderings, clipping ceilings, tonal points, subject-vs-background relations — that future edits can be measured against, turning "matches the look" into a measurement instead of a vibe.
+  - `photoshop_template_save` gains an optional `signature_content` arg (strictly validated — an invalid signature REJECTS the save, unlike the warn-only markdown lint) and a `signature_saved` output field; the bundle gains `signature.json`
+  - Predicate vocabulary v1: `channel_mean_relation`, `clipping_max`, `tonal_point`, `median_band`, `region_luminance_relation`, `region_contrast_relation`, `region_saturation_relation` (saturation parses but reports `skipped` until post-sidecar snippet support; same for `center`/`edges` regions)
+  - Authoring doctrine gains a "Signature — make the exit criteria machine-checkable" section returned via `photoshop_template_create_evidence`
+  - `src/templates/signature.ts` (strict schema + pure evaluator with per-failure corrective steers) + `src/templates/histogram-stats.ts` (percentile/clipping bin math)
+
+#### New tools landing as 'dev' tier (excluded from CE + Pro shipped bundles)
+
+- `photoshop_template_verify(name)` — evaluates the active document against a template's signature: per-predicate `pass | fail | skipped` with measured-vs-target detail and a one-line steer per failure. Regions resolve relationally (Select Subject/Sky + invert; Photoshop histograms are natively selection-scoped); Sensei-gated regions degrade to `skipped`, never `failed`; an empty inverse selection marks `background` unavailable instead of mislabeling full-document stats. Promotion intent: `'community'` after live verification per the roadmap's Phase 2 completion criteria (exemplar passes, unedited source fails, live-smoke transcript).
+
+---
+
 ## [0.8.5] — 2026-06-11
 
 PATCH bump: Templates roadmap Phase 1 — the template system shifts from "replay
@@ -636,7 +684,10 @@ license activation flow land in v1.0.0.
 
 ---
 
-[Unreleased]: https://github.com/editmamei/editmamei-ce/compare/v0.8.5...HEAD
+[Unreleased]: https://github.com/editmamei/editmamei-ce/compare/v0.11.0...HEAD
+[0.11.0]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.11.0
+[0.10.0]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.10.0
+[0.9.0]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.9.0
 [0.8.5]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.8.5
 [0.8.4]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.8.4
 [0.8.3]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.8.3

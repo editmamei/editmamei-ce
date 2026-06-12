@@ -8,12 +8,11 @@
  * / API-reference / code-example leak class — i.e. tipping a tool
  * that's not actually shipping in the CE / Pro bundles yet.
  *
- * The BLOCKED list below is HAND-MAINTAINED and must be kept in
- * sync with Editmamei/src/core/tool-tiers.ts (entries marked 'dev'
- * or 'none'). When you flip a tier in Editmamei, also update the
- * blocklists in:
- *   - editmamei-ce/scripts/check-leak-guard.mjs   (this file)
- *   - editmamei-web/scripts/check-leak-guard.mjs
+ * The BLOCKED list below is AUTO-GENERATED from
+ * Editmamei/src/core/tool-tiers.ts by Editmamei/scripts/sync-leak-guard.ts.
+ * Do NOT hand-edit the fenced region — when a tier flips in Editmamei,
+ * run `npm run sync:leak-guard` there to regenerate this file's region
+ * and editmamei-web's in one pass.
  *
  * Run locally: `node scripts/check-leak-guard.mjs`
  * Runs in CI via .github/workflows/leak-guard.yml on every push / PR.
@@ -49,17 +48,17 @@ const BLOCKED = [
 ];
 // === END AUTO-GENERATED BLOCKED ===
 
-// NOTE on CHANGELOG.md scope (2026-06-05): CHANGELOG.md is intentionally
-// excluded from this scan. It's auto-generated from the private-source
-// CHANGELOG via Editmamei/scripts/sync-changelogs.ts, which has its OWN
-// leak guard at the boundary that matters (the editmamei-web landing-page
-// cards). The CE changelog is honest release-history disclosure — bullets
-// under H4 subsections labeled "...dev tier..." or "Fixes to dev-tier
-// tools..." mention tool names in context as "these were added/fixed but
-// stayed at dev tier." That's the OPPOSITE of marketing tipping; the
-// reader knows the tools aren't in the shipped surface. Re-adding
-// CHANGELOG.md to this scan would require the sync script to strip every
-// such bullet from CE, which loses the disclosure value.
+// NOTE on CHANGELOG.md scope (2026-06-05, updated 2026-06-12): CHANGELOG.md
+// is intentionally excluded from this scan. It's auto-generated from the
+// private-source CHANGELOG via Editmamei/scripts/sync-changelogs.ts. The CE
+// changelog is honest release-history disclosure — bullets under H4
+// subsections labeled "...dev tier..." or "Fixes to dev-tier tools..."
+// mention tool names in context as "these were added/fixed but stayed at
+// dev tier." That's the OPPOSITE of marketing tipping; the reader knows the
+// tools aren't in the shipped surface. Re-adding CHANGELOG.md to this scan
+// would require the sync script to strip every such bullet from CE, which
+// loses the disclosure value. (The web landing-page changelog cards that
+// once carried their own leak guard were removed from the site 2026-06-12.)
 const SCAN_ROOTS = ['README.md', 'CONTRIBUTING.md', 'SECURITY.md', 'docs'];
 
 const EXCLUDED_EXTS = new Set([
@@ -93,7 +92,10 @@ function* walk(start) {
 }
 
 const leaks = [];
+let scannedFiles = 0;
+const emptyRoots = [];
 for (const root of SCAN_ROOTS) {
+  let rootFiles = 0;
   for (const file of walk(root)) {
     if (file === SELF_PATH) continue;
     if (EXCLUDED_EXTS.has(extname(file).toLowerCase())) continue;
@@ -103,6 +105,7 @@ for (const root of SCAN_ROOTS) {
     } catch {
       continue;
     }
+    rootFiles++;
     const lines = content.split(/\r?\n/);
     for (let i = 0; i < lines.length; i++) {
       for (const blocked of BLOCKED) {
@@ -112,6 +115,18 @@ for (const root of SCAN_ROOTS) {
       }
     }
   }
+  if (rootFiles === 0) emptyRoots.push(root);
+  scannedFiles += rootFiles;
+}
+
+// A guard that scans nothing must not report success — a renamed or
+// missing scan root would otherwise silently pass forever.
+if (emptyRoots.length > 0) {
+  console.error(
+    `LEAK GUARD ERROR — scan root(s) yielded no readable files: ${emptyRoots.join(', ')}. ` +
+      `Check SCAN_ROOTS against the repo layout.`
+  );
+  process.exit(2);
 }
 
 if (leaks.length > 0) {
@@ -130,4 +145,6 @@ if (leaks.length > 0) {
   process.exit(1);
 }
 
-console.log(`Leak guard OK — none of ${BLOCKED.length} blocked names found in public docs.`);
+console.log(
+  `Leak guard OK — none of ${BLOCKED.length} blocked names found in ${scannedFiles} scanned files.`
+);

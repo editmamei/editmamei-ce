@@ -4,7 +4,7 @@ Editmamei ships in two editions from a single npm package. The same `editmamei` 
 
 Both editions follow the same rule: AI orchestration, not generation. Photoshop edits with its own real tools; Pro just gives the AI a deeper toolkit to orchestrate.
 
-This page describes the line between Community and Pro at v1.0. The split may evolve over time — see [editmamei.com/pricing](https://editmamei.com/pricing) for the current state.
+This page describes the line between Community and Pro as it stands today. The split may evolve over time — see [editmamei.com/pricing](https://editmamei.com/pricing) for the current state.
 
 ---
 
@@ -18,22 +18,20 @@ Pro activation ships with the v1.0 launch — the license CLI and purchase flow 
 
 The Community edition covers the core editing surface most photographers need day to day:
 
-- **Documents** — create, open, save, export, close, crop, resize
-- **Layers** — create, duplicate, delete, rename, reorder, group, merge, flatten
-- **Layer properties** — opacity, blend mode, visibility, locking
-- **Basic adjustments** — Brightness/Contrast, Hue/Saturation, Auto Levels, Auto Contrast as direct bakes
-- **Filters** — Gaussian Blur, Motion Blur, Sharpen, Add Noise
-- **Selections** — Rectangle, Select All, Deselect, Invert, Feather
+- **Documents** — create, open, save layered PSDs, export JPEG/PNG, close, crop, resize
+- **Layers** — create, duplicate, delete, rename, reorder, group, merge, flatten, stamp visible
+- **Layer properties** — opacity, blend mode, visibility, locking, rasterize
+- **Non-destructive adjustments** — Curves, Levels, Hue/Saturation, Brightness/Contrast as adjustment layers (an active selection becomes the new layer's mask automatically)
+- **Filters & tonal tools** — Gaussian Blur, Motion Blur, Sharpen, Smart Sharpen, Reduce Noise, High Pass, Add Noise, Shadows/Highlights, Equalize — destructive ops run on an auto-duplicated layer by default so the original is preserved
+- **Selections** — Magic Wand, Rectangle, Select All, Deselect, Invert, Feather — every selection returns rich feedback (area, edge complexity, pixel counts) plus a selection preview
 - **Layer masks** — create from selection, apply, delete
-- **Layer styles** — drop shadow, stroke, outer glow, inner shadow
-- **Selections** — Magic Wand (alongside Rectangle / Select All / Deselect / Invert / Feather)
-- **Templates** — list and apply user-saved templates from `~/.editmamei/templates/`. Templates are bundles that pair a markdown recipe with before/after previews and the captured tool-call evidence; CE applies them, Pro creates them.
-- **History** — undo, redo, get history states, jump to state
-- **Actions** — list, play recorded Photoshop Actions
-- **Preview & inspection** — downscaled preview JPEG, document info, layer tree (per-channel histograms are Pro)
-- **Text** — create text layers, set font / size / color / alignment
-- **Image placement** — place files, fit to document
-- **Escape hatch** — `photoshop_execute_script` for arbitrary ExtendScript when no specific tool fits
+- **Layer styles** — drop shadow, stroke, outer glow
+- **Templates** — list, apply, verify, and recall saved templates from `~/.editmamei/templates/`. Templates are bundles that pair a markdown recipe with before/after previews and the captured tool-call evidence; CE applies and verifies them, Pro creates them. (Templates are saved per-machine — a fresh install starts with an empty library until you author one with Pro or copy a bundle in.)
+- **History** — undo, redo, inspect history states
+- **Visual verification** — downscaled preview JPEGs returned inline, layer-bounds diffs, region comparison, and 256-bin per-channel histograms with mean / stdev / median
+- **Document insight** — camera metadata (make, model, lens, ISO, focal length, GPS), ACR develop settings, full layer tree as JSON, capability overview
+- **Text** — create text layers, set font / size / color / alignment, update content
+- **Image placement** — place image files into the document
 
 This is enough to drive a full landscape or product editing workflow in conversation with your AI.
 
@@ -41,17 +39,17 @@ This is enough to drive a full landscape or product editing workflow in conversa
 
 ## Pro Edition — what's added
 
-Pro extends the surface for professional non-destructive workflows, batch editing, and reproducible aesthetic recipes.
+Pro extends the surface for professional non-destructive workflows, batch editing, retouch power tools, and reproducible aesthetic recipes.
 
 ### Templates system — authoring side
 
-A template is a reproducible aesthetic recipe — capture the current edit as a named bundle, then apply it later to new images. The authoring side is Pro; applying templates (your own or the CE built-ins) is Community.
+A template is a reproducible aesthetic recipe — capture the current edit as a named bundle, then apply it later to new images. The authoring side is Pro; applying, verifying, and recalling templates is Community.
 
 - `photoshop_template_create_evidence` — gathers session evidence (tool calls, history states, metadata snapshot) and renders before/after previews
-- `photoshop_template_save` — saves the template bundle to `~/.editmamei/templates/<slug>/`
+- `photoshop_template_save` — saves the template bundle to `~/.editmamei/templates/<slug>/`, optionally with a machine-checkable style signature
 - `photoshop_template_delete` — removes a saved template
 
-CE users get `photoshop_template_apply` and `photoshop_template_list` (above, under Community); they can apply any template at `~/.editmamei/templates/<slug>/` but cannot create, save, or delete templates. Pro adds the authoring tools so editing decisions become repeatable rather than one-shots — the AI uses its own captured reasoning to drive the existing pipeline tools on a new image, self-judging against the template's exit criteria.
+CE users get `photoshop_template_apply`, `photoshop_template_list`, `photoshop_template_verify`, and `photoshop_template_recall` (above, under Community); they can apply and verify any template at `~/.editmamei/templates/<slug>/` but cannot create, save, or delete templates. Pro adds the authoring tools so editing decisions become repeatable rather than one-shots — the AI uses its own captured reasoning to drive the existing pipeline tools on a new image, self-judging against the template's exit criteria.
 
 ### Sensei-backed selections
 
@@ -60,13 +58,28 @@ CE users get `photoshop_template_apply` and `photoshop_template_list` (above, un
 
 Every selection returns a rich feedback bundle — area coverage, edge complexity, partial-vs-full pixel counts — so the AI can verify a selection actually grabbed what was intended before committing. The non-Sensei selection tools (Magic Wand, rectangle, feather) are in Community.
 
-### Per-channel histograms
+### Content-aware retouch
 
-- `photoshop_get_histogram` — 256-bin distribution for any channel with mean / stdev / median, returned inline so the AI can confirm an operation actually changed pixels.
+- `photoshop_apply_content_aware_fill` — fill a selection from its surroundings
+- `photoshop_apply_patch` — Patch-tool-style repair from a sampled region
+- `photoshop_apply_content_aware_move` — move a selected object and heal the source
+
+Photoshop's premium retouch moves, driven against a selection the AI can verify first.
+
+### Layer transforms
+
+- `photoshop_move_layer`, `photoshop_scale_layer`, `photoshop_rotate_layer`, `photoshop_fit_layer_to_document`
+
+Free transforms on the active layer (background layers are auto-promoted instead of erroring).
+
+### Actions and scripting
+
+- `photoshop_list_actions` / `photoshop_play_action` — enumerate and play your recorded Photoshop Actions
+- `photoshop_execute_script` — the escape hatch: arbitrary ExtendScript when no specific tool fits
 
 ### Coming in Pro post-v1.0
 
-Roadmap items live in [`roadmap.md`](roadmap.md) (also at [editmamei.com/roadmap](https://editmamei.com/roadmap)). Highlights:
+Roadmap items live in [`roadmap.md`](roadmap.md). Highlights:
 
 - Smart Objects with editable contents and Smart Object lifecycle tools
 - Smart Filters
@@ -82,10 +95,4 @@ When this lands, Editmamei Pro becomes a complete AI-driven non-destructive edit
 
 ## Pricing
 
-Current tiers at [editmamei.com/pricing](https://editmamei.com/pricing). Pro is available as a subscription or a one-time lifetime license.
-
-Pro subscribers get:
-
-- Priority email support at `support@editmamei.com`
-- Early access to new Pro tools as they ship
-- A vote in roadmap prioritization through the Pro community Discord (planned)
+Pricing and purchase options will be published at [editmamei.com/pricing](https://editmamei.com/pricing) when Pro launches.
