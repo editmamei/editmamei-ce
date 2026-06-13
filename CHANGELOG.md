@@ -12,6 +12,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ---
 
+## [0.11.1] — 2026-06-13
+
+Go sidecar Phase 3 (vertical slice): the edition-split mechanism that keeps
+Pro snippet IP out of the Community binary, proven end-to-end on the Sensei
+selection tools.
+
+### Changed
+
+- **Select Subject and Select Sky now run through the sealed core binary on Pro.** Behavior is unchanged — the underlying ExtendScript is byte-for-byte equivalent (golden-verified) — but it is now produced by the compiled core instead of in-process JavaScript, the first Pro tools to move onto the new path.
+  - `photoshop_select_subject` / `photoshop_select_sky` handlers flipped to `snippetClient.build()`; `selection-tools-pro` factory takes the `SnippetClient`
+
+---
+
 ## [0.11.0] — 2026-06-12
 
 Templates roadmap Phase 3 (recall) + Go sidecar migration Phase 0 (vertical
@@ -684,7 +697,8 @@ license activation flow land in v1.0.0.
 
 ---
 
-[Unreleased]: https://github.com/editmamei/editmamei-ce/compare/v0.11.0...HEAD
+[Unreleased]: https://github.com/editmamei/editmamei-ce/compare/v0.11.1...HEAD
+[0.11.1]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.11.1
 [0.11.0]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.11.0
 [0.10.0]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.10.0
 [0.9.0]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.9.0
