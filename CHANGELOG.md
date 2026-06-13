@@ -12,6 +12,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ---
 
+## [0.11.2] — 2026-06-13
+
+Go sidecar Phase 3 (cont.): the template-authoring Pro tools move onto the
+sealed core binary. No snippet porting was needed — their snippets were
+already in the binary — so this is a pure handler flip.
+
+### Changed
+
+- **Template authoring (create-evidence / save) now produces its Photoshop reads through the sealed core binary on Pro.** Behavior is unchanged; the history-state preview, history-states, and metadata reads are now built by the compiled core instead of in-process JavaScript.
+  - `photoshop_template_create_evidence` / `photoshop_template_save` route `renderHistoryStatePreview`, `getHistoryStates`, and `getMetadata` through `snippetClient.build()`; the `template-tools-pro` factory takes the `SnippetClient`. The metadata read explicitly requests `dom_exif: false` to preserve the prior behavior exactly.
+
+---
+
 ## [0.11.1] — 2026-06-13
 
 Go sidecar Phase 3 (vertical slice): the edition-split mechanism that keeps
@@ -697,7 +710,8 @@ license activation flow land in v1.0.0.
 
 ---
 
-[Unreleased]: https://github.com/editmamei/editmamei-ce/compare/v0.11.1...HEAD
+[Unreleased]: https://github.com/editmamei/editmamei-ce/compare/v0.11.2...HEAD
+[0.11.2]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.11.2
 [0.11.1]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.11.1
 [0.11.0]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.11.0
 [0.10.0]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.10.0
