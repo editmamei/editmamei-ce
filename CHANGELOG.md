@@ -12,6 +12,23 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ---
 
+## [0.11.5] — 2026-06-13
+
+Go sidecar **seal**: the ExtendScript snippet catalog + AM spec library no
+longer ship as plaintext JavaScript. The hard-won descriptor IP now lives
+ONLY in the encrypted `editmamei-core` binary.
+
+### Security
+
+- **Snippet descriptor IP is no longer shipped in readable JavaScript.** The `src/api/extendscript/*` snippet catalog and the `src/spec/*` AM Event Library (event IDs, descriptor keys, types) are excluded from the published bundle; the descriptor logic ships only inside the sealed, encrypted Go core. Verified: zero descriptor tokens (e.g. the content-aware-fill / hue-saturation / patch keys) appear anywhere in the shipped CE or Pro `dist/` JavaScript. CE bundle unpacked size dropped ~8.0 → 7.4 MB.
+
+### Changed
+
+- **Subject/sky-region template verification is now a Pro capability.** `photoshop_template_verify` (free) still checks global/tonal predicates; predicates scoped to the subject/sky/background regions need Sensei selection, which is Pro-gated in the Community core, so in CE they degrade cleanly to *skipped* with a "requires the Pro edition" reason (never failed).
+  - The last in-process snippet callers were flipped to the core binary: the server's `pingState` liveness read and `template_verify`'s region-measurement reads (`getHistogram`/`deselect`/`invertSelection`/`selectSubject`/`selectSky`).
+
+---
+
 ## [0.11.4] — 2026-06-13
 
 Go sidecar Phase 3 **complete**: the last two Pro factories (action + retouch)
@@ -738,7 +755,8 @@ license activation flow land in v1.0.0.
 
 ---
 
-[Unreleased]: https://github.com/editmamei/editmamei-ce/compare/v0.11.4...HEAD
+[Unreleased]: https://github.com/editmamei/editmamei-ce/compare/v0.11.5...HEAD
+[0.11.5]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.11.5
 [0.11.4]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.11.4
 [0.11.3]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.11.3
 [0.11.2]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.11.2
