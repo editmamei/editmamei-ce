@@ -12,6 +12,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ---
 
+## [0.11.3] — 2026-06-13
+
+Go sidecar Phase 3 (cont.): the layer-transform Pro tools (move / rotate /
+scale / fit) move onto the sealed core binary, with their snippet IP gated
+behind the `pro` edition tag.
+
+### Changed
+
+- **Move, rotate, scale, and fit-to-canvas now run through the sealed core binary on Pro.** Behavior is unchanged — same positioning modes, same background auto-promote — but the ExtendScript is now produced by the compiled core (golden-verified byte-equivalent) rather than in-process JavaScript.
+  - `photoshop_move_layer` / `photoshop_rotate_layer` / `photoshop_scale_layer` / `photoshop_fit_layer_to_document` handlers flipped to `snippetClient.build()`; the `layer-transform-tools-pro` factory takes the `SnippetClient`. Mode resolution + mutual-exclusivity validation stay in the handler; the bounds math, auto-promote, and fit/fill branch are in the snippet body.
+
+---
+
 ## [0.11.2] — 2026-06-13
 
 Go sidecar Phase 3 (cont.): the template-authoring Pro tools move onto the
@@ -710,7 +723,8 @@ license activation flow land in v1.0.0.
 
 ---
 
-[Unreleased]: https://github.com/editmamei/editmamei-ce/compare/v0.11.2...HEAD
+[Unreleased]: https://github.com/editmamei/editmamei-ce/compare/v0.11.3...HEAD
+[0.11.3]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.11.3
 [0.11.2]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.11.2
 [0.11.1]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.11.1
 [0.11.0]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.11.0
