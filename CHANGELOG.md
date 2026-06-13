@@ -12,6 +12,21 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ---
 
+## [0.11.4] — 2026-06-13
+
+Go sidecar Phase 3 **complete**: the last two Pro factories (action + retouch)
+move onto the sealed core, so **all five** Pro factories now build through the
+binary. Every Pro snippet's IP is excluded from the Community binary.
+
+### Changed
+
+- **Content-aware fill / patch / move now run through the sealed core binary on Pro.** Behavior unchanged (golden-verified byte-equivalent); the AM descriptors are produced by the compiled core instead of in-process JavaScript.
+  - `photoshop_apply_content_aware_fill` / `photoshop_apply_patch` / `photoshop_apply_content_aware_move` handlers flipped to `snippetClient.build()`; `retouch-tools-pro` factory takes the `SnippetClient`.
+- **List-actions and play-action now run through the sealed core binary on Pro.** The action-set enumeration and `doAction` dispatch are now produced by the compiled core.
+  - `photoshop_list_actions` / `photoshop_play_action` handlers flipped to `snippetClient.build()`; `action-tools-pro` factory takes the `SnippetClient`.
+
+---
+
 ## [0.11.3] — 2026-06-13
 
 Go sidecar Phase 3 (cont.): the layer-transform Pro tools (move / rotate /
@@ -723,7 +738,8 @@ license activation flow land in v1.0.0.
 
 ---
 
-[Unreleased]: https://github.com/editmamei/editmamei-ce/compare/v0.11.3...HEAD
+[Unreleased]: https://github.com/editmamei/editmamei-ce/compare/v0.11.4...HEAD
+[0.11.4]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.11.4
 [0.11.3]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.11.3
 [0.11.2]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.11.2
 [0.11.1]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.11.1
