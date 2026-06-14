@@ -12,6 +12,27 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ---
 
+## [0.12.0] — 2026-06-14
+
+Three fixes from a 72-hour session-log review — each removes a wasted
+round-trip or blind-iteration trap, not a crash.
+
+### Changed
+
+- **JPEG export quality now uses the familiar 0-100 scale.** The export-quality control accepts the same 0-100 values as Photoshop's "Save As" / JPEG dialog instead of the obscure 0-12 scripting scale, so a request for "quality 90" no longer fails.
+  - `photoshop_export_jpeg` `quality` is now `0-100` (default 90), normalized internally to Photoshop's 0-12 `JPEGSaveOptions` scale (90→11, 100→12, 50→6, 0→0)
+  - The result echoes the 0-100 value you passed and adds `quality_ps_scale` for the 0-12 value actually used
+- **Saving a style template now reports every signature problem at once.** A single save lists all validation problems so they can be fixed in one edit, instead of surfacing one error per attempt.
+  - `photoshop_template_save` signature validation collects all errors, with a cascade guard so one bad predicate `type` no longer sprays spurious "unknown key" noise
+  - The `signature_content` description self-documents each predicate type's allowed keys, built from the validator's source-of-truth maps so it cannot drift
+
+### Fixed
+
+- **Empty Photoshop errors now carry an actionable message.** When Photoshop fails with no message (often after a prior modal or timeout left it stuck), tools no longer surface a blank trailer like "Error selecting layer: " — a synthetic explanation with a recovery hint is substituted for every tool.
+  - The substitution lives at the single `ExtendScriptPhotoshopAPI.executeScript` chokepoint (covers Windows + macOS + all current/future tools); `preview-tools`' local-only guard was removed in favor of it
+
+---
+
 ## [0.11.6] — 2026-06-14
 
 ### Changed
@@ -768,7 +789,8 @@ license activation flow land in v1.0.0.
 
 ---
 
-[Unreleased]: https://github.com/editmamei/editmamei-ce/compare/v0.11.6...HEAD
+[Unreleased]: https://github.com/editmamei/editmamei-ce/compare/v0.12.0...HEAD
+[0.12.0]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.12.0
 [0.11.6]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.11.6
 [0.11.5]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.11.5
 [0.11.4]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.11.4
