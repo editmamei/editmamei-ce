@@ -12,6 +12,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ---
 
+## [0.13.1] — 2026-06-14
+
+### Fixed
+
+- **Slow operations on large images no longer time out prematurely.** Selection channel save/load, Select Subject, and Select Sky now use a 120-second per-tool timeout instead of the blanket 30-second default, so working on high-resolution files (12MP+ cameras) no longer produces "Script execution timeout" errors.
+  - `photoshop_save_selection_to_channel` — 120 s (was 30 s); `selection.store()` on a 45MP RAW can exceed 60 s
+  - `photoshop_load_selection_from_channel` — 120 s (was 30 s)
+  - `photoshop_select_subject` — 120 s (was 30 s); AI inference time scales with layer count and image size
+  - `photoshop_select_sky` — 120 s (was 30 s); same Sensei inference path
+
+---
+
 ## [0.13.0] — 2026-06-14
 
 ### Added
@@ -820,7 +832,8 @@ license activation flow land in v1.0.0.
 
 ---
 
-[Unreleased]: https://github.com/editmamei/editmamei-ce/compare/v0.13.0...HEAD
+[Unreleased]: https://github.com/editmamei/editmamei-ce/compare/v0.13.1...HEAD
+[0.13.1]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.13.1
 [0.13.0]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.13.0
 [0.12.2]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.12.2
 [0.12.1]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.12.1
