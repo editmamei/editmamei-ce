@@ -12,6 +12,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ---
 
+## [0.11.6] — 2026-06-14
+
+### Changed
+
+- **Skill guidance improved: layer audit, tune-before-add, selection persistence, and co-working patterns.** The bundled Claude skill now includes four new workflow sections that codify lessons learned from real editing sessions.
+  - Iterate step now requires a `photoshop_get_layer_tree` read before every refinement cycle to find existing layers that can be tuned rather than duplicated
+  - New "Tune before add" section: explicit rule to increase opacity on an existing layer before spawning a new one targeting the same zone; add only when no existing layer can express the correction
+  - New "Selection persistence" section: build the selection once and add all layers that share that mask while the selection is active; note parameters for later rebuild; script-execution escape hatch can save to a named channel for masks reused more than twice
+  - New "Co-working" section: three patterns for when the user has touched the document — re-assess with `photoshop_get_layer_tree` + `photoshop_get_preview` before responding to any reported manual change, propose tuning before new layers on mid-edit feedback, integrate manual adjustments rather than overriding them
+  - Group mandate strengthened from "4+ layers triggers grouping" to "group by category proactively, never exceed 3 ungrouped per category"
+
+---
+
 ## [0.11.5] — 2026-06-13
 
 Go sidecar **seal**: the ExtendScript snippet catalog + AM spec library no
@@ -755,7 +768,8 @@ license activation flow land in v1.0.0.
 
 ---
 
-[Unreleased]: https://github.com/editmamei/editmamei-ce/compare/v0.11.5...HEAD
+[Unreleased]: https://github.com/editmamei/editmamei-ce/compare/v0.11.6...HEAD
+[0.11.6]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.11.6
 [0.11.5]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.11.5
 [0.11.4]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.11.4
 [0.11.3]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.11.3
