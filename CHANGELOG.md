@@ -12,6 +12,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ---
 
+## [0.12.1] — 2026-06-14
+
+### Fixed
+
+- **Routine edits no longer stall on Photoshop's missing-font or color-profile prompts.** Those script-command dialogs are now suppressed for the duration of every operation, so they can't silently block the connection waiting for a click; your interactive Photoshop session is unchanged afterward.
+  - The wrapper preamble forces `app.displayDialogs = DialogModes.NO` (captured and restored in `finally`, alongside the existing ruler/type-unit isolation), at the single `ExtendScriptPhotoshopAPI.executeScript` chokepoint so every tool inherits it
+  - Layer A of the transport-resilience design (docs/20260614-resilience-error-handling-design.md). App/OS-level modals (linked-asset, "disk changed", license, GPU, rasterize) are out of scope here — they need the planned out-of-process modal watcher (Layer B)
+
+---
+
 ## [0.12.0] — 2026-06-14
 
 Three fixes from a 72-hour session-log review — each removes a wasted
@@ -789,7 +799,8 @@ license activation flow land in v1.0.0.
 
 ---
 
-[Unreleased]: https://github.com/editmamei/editmamei-ce/compare/v0.12.0...HEAD
+[Unreleased]: https://github.com/editmamei/editmamei-ce/compare/v0.12.1...HEAD
+[0.12.1]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.12.1
 [0.12.0]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.12.0
 [0.11.6]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.11.6
 [0.11.5]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.11.5
