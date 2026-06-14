@@ -12,6 +12,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ---
 
+## [0.12.2] — 2026-06-14
+
+### Changed
+
+- **Skill guidance enriched with professional Photoshop layer stack discipline.** The bundled Claude skill now teaches the canonical 7-tier layer ordering and the non-destructive 50% gray Dodge & Burn method, baking in patterns that professionals follow reflexively.
+  - New "Canonical layer stack" section: numbered stack order (Background → Retouching → Dodge & Burn → Global Tone → Color → Effects → Sharpening), explains the causal reasons for each position, recommends layer color label conventions for handoff
+  - New "Dodge & Burn — the 50% gray method" section: three-call workflow (`create_layer` → `fill_layer` with `#808080` → `set_layer_blend_mode` to `soft light` or `overlay`), soft-light vs overlay trade-off, Overlay saturation-boost caveat and fix
+  - Non-destructive principles: "Group by category" bullet updated to reference the canonical stack order; new "Never erase, always mask" rule; new "Sharpen last, blend Luminosity" rule
+
+---
+
 ## [0.12.1] — 2026-06-14
 
 ### Fixed
@@ -799,7 +810,8 @@ license activation flow land in v1.0.0.
 
 ---
 
-[Unreleased]: https://github.com/editmamei/editmamei-ce/compare/v0.12.1...HEAD
+[Unreleased]: https://github.com/editmamei/editmamei-ce/compare/v0.12.2...HEAD
+[0.12.2]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.12.2
 [0.12.1]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.12.1
 [0.12.0]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.12.0
 [0.11.6]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.11.6
