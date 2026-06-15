@@ -12,6 +12,24 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ---
 
+## [0.15.0] — 2026-06-15
+
+### Added
+
+- **LUT-based color grading is now available.** Apply any 3DLUT preset (the film-stock looks Photoshop ships, or your own `.cube`/`.3dl`/`.look` file) as a baked color grade, live-verified against Photoshop 2026.
+  - `photoshop_apply_color_lookup` promoted dev → community after live verification (session `2026-06-15T01-59-38Z-2f18`, Windows PS 27.2.0). Runs on a duplicate by default so the original is preserved. The non-destructive adjustment-layer form still can't load a LUT via scripting, so this bake is the only working LUT path.
+
+### Fixed
+
+- **Color grading presets with spaces or parentheses in their names now resolve.** Bundled looks like "Kodak 5205 Fuji 3510 (by Adobe).cube" previously reported "LUT not found" even though the file was installed.
+  - Root cause: ExtendScript's `Folder.getFiles()` returns URI-encoded names (spaces → `%20`, `(` → `%28`), so the literal leaf name never matched. Fixed with `decodeURI` before comparison.
+
+#### Fixes to dev-tier tools (excluded from CE + Pro shipped bundles)
+
+- **Brush strokes no longer fail when setting brush size.** `photoshop_apply_brush_stroke` threw "command Set is not currently available" because no brush-family tool was the active tool when the size descriptor ran. The snippet now activates `paintbrushTool` (the brush tip is a shared resource) before sizing and restores the prior tool afterward. Live-verified for basic brush, dodge-with-dynamics, and clone-stamp-with-source. The tool stays at dev pending its move to the Pro edition.
+
+---
+
 ## [0.14.0] — 2026-06-15
 
 ### Added
@@ -844,7 +862,8 @@ license activation flow land in v1.0.0.
 
 ---
 
-[Unreleased]: https://github.com/editmamei/editmamei-ce/compare/v0.14.0...HEAD
+[Unreleased]: https://github.com/editmamei/editmamei-ce/compare/v0.15.0...HEAD
+[0.15.0]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.15.0
 [0.14.0]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.14.0
 [0.13.1]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.13.1
 [0.13.0]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.13.0
