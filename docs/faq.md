@@ -64,7 +64,7 @@ No. Editmamei drives Photoshop through Windows COM automation or macOS AppleScri
 
 ### Does it need an internet connection?
 
-The Editmamei server itself makes no outbound network connections of its own in the Community Edition. The Pro Edition adds one Editmamei-side call: license validation against the license server, roughly once per 7 days, which sends `{license key, version, OS}` and no document or image data.
+Core editing doesn't — Editmamei never requires a network call to drive Photoshop. The one call Editmamei makes on its own is anonymous, content-free usage telemetry (which tools ran, whether they succeeded, version/OS/Photoshop version), sent in the background and best-effort. It carries no images, paths, or personal data, and you can switch it off with `editmamei config set telemetry.usage false`. Every field that's collected is documented in [privacy.md](privacy.md).
 
 Your AI assistant is separate. Editmamei runs as a stdio subprocess of your AI assistant (Claude Desktop, Cursor, etc.), and that assistant is itself a cloud service governed by its own privacy policy. When you ask the AI to look at a visual preview, Editmamei sends a downscaled JPEG to *that AI provider* on your behalf — exactly as if you'd dropped the file into a chat with it. So an internet connection is required for the AI to function, even if Editmamei the server isn't transmitting anything itself.
 
@@ -94,11 +94,11 @@ The current Community tool surface does not include a file-deletion tool. The AI
 
 ### How does the AI know what the image looks like?
 
-Through `photoshop_get_preview`, which returns a downscaled JPEG of the current document state. The AI calls this when it needs to verify its own work or judge an aesthetic outcome. It can also call `photoshop_get_histogram` for per-channel pixel distributions and `photoshop_get_document_info` for dimensions, color mode, and embedded profile.
+Through `photoshop_get_preview`, which returns a downscaled JPEG of the current document state. The AI calls this when it needs to verify its own work or judge an aesthetic outcome. It can also call `photoshop_get_histogram` for per-channel pixel distributions and `photoshop_get_metadata` for dimensions, color mode, and embedded profile.
 
 ### Does Editmamei collect any data about my edits?
 
-No — not by Editmamei itself. Editmamei writes a local session log to `~/.editmamei/sessions/<session-id>.ndjson` (used for debugging and by the Templates system) that stays on your disk; Editmamei doesn't read it or transmit it. (What your AI client does with content you share in chat is a separate question — see the [privacy policy](https://editmamei.com/privacy).)
+Nothing about the content of your edits — no images, document data, or file paths ever leave your machine. Editmamei does send anonymous, content-free usage data (which tools ran, whether they succeeded, how long they took), which you can switch off; see [privacy.md](privacy.md) for every field. Separately, a richer local session log is written to `~/.editmamei/sessions/<session-id>.ndjson` (used for debugging and by the Templates system) that stays on your disk and is **not** transmitted. (What your AI client does with content you share in chat is a separate question — see the [privacy policy](https://editmamei.com/privacy).)
 
 ### Can I run Editmamei against multiple Photoshop versions installed side by side?
 
