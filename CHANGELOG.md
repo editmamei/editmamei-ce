@@ -12,6 +12,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ---
 
+## [0.16.1] — 2026-06-15
+
+### Changed
+
+- **Telemetry now points at the live endpoint.** The telemetry server is deployed, so the client's default destination is set to the running ingest Worker; anonymous content-free telemetry (still opt-out, unchanged) now actually reaches it.
+  - `DEFAULT_TELEMETRY_ENDPOINT` set to the deployed Worker's `workers.dev` hostname (`EDITMAMEI_TELEMETRY_URL` still overrides). The cleaner `telemetry.editmamei.com` custom domain awaits moving `editmamei.com`'s DNS to Cloudflare (the site is on GitHub Pages today); it's a one-line switch when that happens.
+
+---
+
 ## [0.16.0] — 2026-06-15
 
 ### Added
@@ -879,7 +888,8 @@ license activation flow land in v1.0.0.
 
 ---
 
-[Unreleased]: https://github.com/editmamei/editmamei-ce/compare/v0.16.0...HEAD
+[Unreleased]: https://github.com/editmamei/editmamei-ce/compare/v0.16.1...HEAD
+[0.16.1]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.16.1
 [0.16.0]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.16.0
 [0.15.0]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.15.0
 [0.14.0]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.14.0
