@@ -12,6 +12,23 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ---
 
+## [0.16.0] — 2026-06-15
+
+### Added
+
+- **Anonymous, content-free usage telemetry — on by default, easy to turn off.** Editmamei now reports which tools you use, whether they succeed, and how long they take, so a solo maintainer can see what's breaking in the field instead of guessing. It never sends image content, file paths, or personal data — only counts and outcomes.
+  - New `src/telemetry/` client: batches content-free `usage` + `session_summary` events (Category A, opt-out) and, when you opt in, sanitized `diagnostic` detail (Category B). Sent fire-and-forget to the telemetry Worker; a failure never blocks or breaks a tool call.
+  - Privacy is enforced structurally: events carry only declared dimensions (tool, success, duration, version/edition/OS/PS-version) and every diagnostic message is sanitized (paths → basenames, home dir redacted) before send. The client mirrors the server's path guard and drops anything still path-shaped.
+  - Inert in local dev and under the test runner — only CE/Pro builds send.
+- **`editmamei config` CLI.** Get/set/list settings in `~/.editmamei/settings.json` (the single source of truth). `editmamei config set telemetry.usage false` opts out; `telemetry.diagnostics true` opts in to diagnostic detail.
+- **First-run disclosure.** On the run that creates `settings.json`, Editmamei plainly states what telemetry collects, the content-never guarantee, and how to opt out.
+
+### Changed
+
+- **Graceful shutdown.** The server now flushes a final telemetry batch + session summary on transport close and on SIGINT/SIGTERM, instead of relying on abrupt process termination.
+
+---
+
 ## [0.15.0] — 2026-06-15
 
 ### Added
@@ -862,7 +879,8 @@ license activation flow land in v1.0.0.
 
 ---
 
-[Unreleased]: https://github.com/editmamei/editmamei-ce/compare/v0.15.0...HEAD
+[Unreleased]: https://github.com/editmamei/editmamei-ce/compare/v0.16.0...HEAD
+[0.16.0]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.16.0
 [0.15.0]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.15.0
 [0.14.0]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.14.0
 [0.13.1]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.13.1
