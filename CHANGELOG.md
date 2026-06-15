@@ -12,6 +12,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ---
 
+## [0.16.2] — 2026-06-15
+
+### Changed
+
+- **Telemetry endpoint updated to the renamed Worker hostname.** The telemetry Worker's `workers.dev` subdomain was rebranded, so the client's default destination is updated to match; 0.16.1's URL no longer resolves. (Still opt-out, content-free, `EDITMAMEI_TELEMETRY_URL` overrides.)
+  - `DEFAULT_TELEMETRY_ENDPOINT` → `https://editmamei-telemetry-server.editmamei.workers.dev/v1/telemetry`.
+
+---
+
 ## [0.16.1] — 2026-06-15
 
 ### Changed
@@ -888,7 +897,8 @@ license activation flow land in v1.0.0.
 
 ---
 
-[Unreleased]: https://github.com/editmamei/editmamei-ce/compare/v0.16.1...HEAD
+[Unreleased]: https://github.com/editmamei/editmamei-ce/compare/v0.16.2...HEAD
+[0.16.2]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.16.2
 [0.16.1]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.16.1
 [0.16.0]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.16.0
 [0.15.0]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.15.0
