@@ -79,13 +79,13 @@ When your AI assistant needs to see the result — to verify an edit, say — Ed
 Editmamei gives your AI assistant a working photographer's toolkit inside Photoshop. Your AI calls these as building blocks in service of whatever you actually want, so Photoshop responds to *"make the sky more dramatic but keep the foreground natural"* instead of *Layer → New Adjustment Layer → Curves → drag the curve up at the highlight end.*
 
 - **Documents** — open PSD, JPEG, PNG, TIFF, DNG, HEIC, and the standard raw formats; save layered PSDs; export JPEG and PNG
-- **Layers** — create, duplicate, delete, rename, reorder, group, merge, flatten; opacity, blend mode, visibility, locking. Pro adds free layer transforms (move, scale, rotate, fit).
+- **Layers & transforms** — create, duplicate, delete, rename, reorder, group, merge, flatten; opacity, blend mode, visibility, locking; move, scale, rotate, and fit-to-document (straighten a tilted shot in one step)
 - **Smart selections** — Magic Wand, plus rectangle/feather; rich selection feedback. Pro adds Sensei-backed Select Subject and Select Sky.
 - **Non-destructive adjustments** — Curves, Levels, Hue/Saturation, Brightness/Contrast as adjustment layers
-- **Filters** — Gaussian Blur, Motion Blur, Sharpen, Smart Sharpen, Reduce Noise, High Pass, Add Noise; layer styles (drop shadow, stroke, outer glow)
-- **Templates** — apply, verify, and recall saved recipes (markdown + before/after previews + tool-call evidence); create your own with Pro
+- **Filters & retouch** — Gaussian Blur, Motion Blur, Sharpen, Smart Sharpen, Reduce Noise, High Pass, Add Noise; layer styles (drop shadow, stroke, outer glow); content-aware retouch (Content-Aware Fill, Patch, Content-Aware Move)
 - **Visual verification** — downscaled preview JPEGs returned inline, plus 256-bin per-channel histograms with mean/stdev/median
 - **History** — undo, redo, inspect history states. Pro adds Photoshop Actions playback and ExtendScript scripting.
+- **Templates (Pro)** — capture a finished edit as a reproducible recipe and apply it to new photos; the whole template system (create, save, apply, verify, recall) is Pro
 
 Real tools. Real layers. Your pixels.
 
@@ -106,14 +106,13 @@ Full feature breakdown at [editmamei.com](https://editmamei.com).
 | Layer styles + text (drop shadow, stroke, glow; font, color, alignment) | ✅ | ✅ |
 | History (undo, redo, inspect history states) | ✅ | ✅ |
 | Visual verification (inline previews + per-channel histograms) | ✅ | ✅ |
-| Apply, verify, and recall saved templates | ✅ | ✅ |
-| Create / save / delete custom templates | | ✅ |
+| Layer transforms + straightening (move, scale, rotate, fit to document) | ✅ | ✅ |
+| Content-aware retouch (Content-Aware Fill, Patch, Content-Aware Move) | ✅ | ✅ |
+| Templates (create, save, apply, verify, recall reproducible recipes) | | ✅ |
 | Sensei-backed selections (Select Subject, Select Sky) | | ✅ |
-| Content-aware retouch (Content-Aware Fill, Patch, Content-Aware Move) | | ✅ |
-| Layer transforms (move, scale, rotate, fit to document) | | ✅ |
 | Photoshop Actions + scripting (play recorded Actions, ExtendScript escape hatch) | | ✅ |
 
-Community covers the everyday working-photographer editing surface. Pro adds the production toolkit: authoring your own templates, the Sensei selection models for Subject and Sky, the content-aware retouch trio, free layer transforms, and Photoshop Actions + scripting.
+Community covers the everyday working-photographer editing surface — including straightening, layer transforms, and content-aware retouch. Pro adds the production toolkit: the whole reproducible-template system, the Sensei selection models for Subject and Sky, and Photoshop Actions + scripting.
 
 What's *coming* in Pro after v1.0 (Smart Objects, Smart Filters, channels and vector masks, the rest of the adjustment-layer catalog, refined selection edges, advanced transforms) lives in [docs/roadmap.md](docs/roadmap.md), not on this table. The Pro tool list as it ships today is in [docs/pro-features.md](docs/pro-features.md). Detailed comparison and pricing at [editmamei.com/pricing](https://editmamei.com/pricing).
 

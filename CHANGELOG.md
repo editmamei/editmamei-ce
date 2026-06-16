@@ -12,6 +12,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ---
 
+## [0.17.0] — 2026-06-16
+
+### Changed
+
+- **Straightening and content-aware retouch are now free.** The layer-transform and content-aware retouch tools moved from Pro into the Community Edition — correcting a tilted phone photo and erasing a distraction are foundational fixes that belong in the free tier.
+  - Promoted Pro → community: `photoshop_fit_layer_to_document`, `photoshop_scale_layer`, `photoshop_move_layer`, `photoshop_rotate_layer`, `photoshop_apply_content_aware_fill`, `photoshop_apply_patch`, `photoshop_apply_content_aware_move`.
+  - CE users get rotation/straightening for the first time; previously the entire layer-transform family (and the `execute_script` fallback) was Pro, so CE had no way to straighten an image.
+- **Templates are now a single Pro feature.** The whole reproducible-recipe surface — saving a look, listing, applying, verifying, and recalling templates — is Pro-tier; previously listing/applying/verifying/recalling were free while only authoring was paid.
+  - Demoted community → pro: `photoshop_template_list`, `photoshop_template_apply`, `photoshop_template_verify`, `photoshop_template_recall` (joining the already-Pro `create_evidence` / `save` / `delete`).
+  - Templates are the learning-loop / repeatability layer; bundling the whole surface as one paid feature matches how it's used.
+
+---
+
 ## [0.16.4] — 2026-06-16
 
 ### Fixed
@@ -917,7 +930,8 @@ license activation flow land in v1.0.0.
 
 ---
 
-[Unreleased]: https://github.com/editmamei/editmamei-ce/compare/v0.16.4...HEAD
+[Unreleased]: https://github.com/editmamei/editmamei-ce/compare/v0.17.0...HEAD
+[0.17.0]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.17.0
 [0.16.4]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.16.4
 [0.16.3]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.16.3
 [0.16.2]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.16.2
