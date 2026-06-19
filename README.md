@@ -17,7 +17,7 @@ This repository is the **public face** of Editmamei. It hosts the user-facing do
 - **Website:** [editmamei.com](https://editmamei.com)
 - **Install:** see [docs/installation.md](docs/installation.md)
 - **Pro features:** see [docs/pro-features.md](docs/pro-features.md)
-- **Report a bug:** [open an issue](https://github.com/editmamei/editmamei-ce/issues/new/choose)
+- **Report a bug:** [open an issue](https://github.com/editmamei/editmamei-wiki/issues/new/choose)
 
 ---
 
@@ -132,7 +132,7 @@ The only thing Editmamei sends to us is content-free: anonymous usage you can au
 
 ## Issues & support
 
-**Bug reports and feature requests** belong in [this repo's issue tracker](https://github.com/editmamei/editmamei-ce/issues). Before opening one, please read the templates and [CONTRIBUTING.md](CONTRIBUTING.md) — they tell you what to include for a fast triage and which kinds of changes are open to PRs.
+**Bug reports and feature requests** belong in [this repo's issue tracker](https://github.com/editmamei/editmamei-wiki/issues). Before opening one, please read the templates and [CONTRIBUTING.md](CONTRIBUTING.md) — they tell you what to include for a fast triage and which kinds of changes are open to PRs.
 
 **Important:** issues are public. **Do not paste your license key, full file paths from sensitive projects, or screenshots of unfinished client work.** The bug report template tells you what's safe to share.
 

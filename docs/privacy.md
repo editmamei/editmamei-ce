@@ -78,6 +78,11 @@ editmamei config set telemetry.diagnostics true  # opt in to diagnostic detail
 
 Boolean values accept `true`/`false`, `on`/`off`, `yes`/`no`, or `1`/`0`.
 
+**In Claude Desktop.** The one-click extension has no terminal, so the same two switches —
+**Share anonymous usage stats** (opt-out) and **Share error diagnostics** (opt-in) — appear in the
+extension's own settings (Settings → Extensions → Editmamei). Toggling them there controls
+telemetry for Claude Desktop without editing any file.
+
 **First-run notice.** The first time Editmamei creates the settings file, it prints this to its
 log so the default is never a surprise:
 
@@ -131,6 +136,25 @@ hidden fields.
 | `success` | Whether the call succeeded. |
 | `error_class` | On failure, a short error **category** (e.g. `missing_pixel_layer`) — never a message, never free text. `null` on success. |
 | `duration_ms` | How long the call took, in milliseconds. |
+
+### Session start — once when Editmamei launches (on by default)
+
+```json
+{
+  "v": 2,
+  "type": "session_start",
+  "install_id": "9f3c…",
+  "ts_bucket": "2026-06-15",
+  "editmamei_version": "0.16.2",
+  "edition": "community",
+  "platform": "win32",
+  "ps_version": "unknown"
+}
+```
+
+Sent once when Editmamei starts, so an install can be counted even before you run anything. Same
+content-free fields as above — **no tool name, no counts, no free text**. `ps_version` is usually
+`unknown` because Photoshop hasn't been queried yet at startup.
 
 ### Session summary — one per session (on by default)
 
@@ -244,5 +268,5 @@ before it ships.
 
 - Full website privacy policy: [editmamei.com/privacy](https://editmamei.com/privacy)
 - Security disclosures: [editmamei.com/security](https://editmamei.com/security)
-- Anything else: [open an issue](https://github.com/editmamei/editmamei-ce/issues) or
+- Anything else: [open an issue](https://github.com/editmamei/editmamei-wiki/issues) or
   [get in touch](https://editmamei.com/contact).

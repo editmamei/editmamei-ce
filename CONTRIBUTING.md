@@ -22,7 +22,7 @@ This means contribution paths look a little different from a typical open-source
 
 Bug reports against the npm package are gold. They're the single best way to improve Editmamei.
 
-1. Search [existing issues](https://github.com/editmamei/editmamei-ce/issues?q=is%3Aissue) first to avoid duplicates.
+1. Search [existing issues](https://github.com/editmamei/editmamei-wiki/issues?q=is%3Aissue) first to avoid duplicates.
 2. Pick the **Bug report** template when opening a new issue.
 3. Fill in everything the template asks for — especially:
    - The output of `editmamei status` (captures Editmamei version, OS, Node, detected Photoshop install, MCP client config state in one line).

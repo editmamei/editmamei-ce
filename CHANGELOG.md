@@ -12,6 +12,22 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ---
 
+## [0.17.3] — 2026-06-18
+
+### Added
+
+- **Telemetry controls in the Claude Desktop extension.** Claude Desktop users can now turn anonymous usage telemetry off — or sanitized diagnostics on — right from the extension settings, with no terminal needed.
+  - New `.mcpb` `user_config` boolean toggles ("Share anonymous usage stats" opt-out / "Share error diagnostics" opt-in) injected as `EDITMAMEI_TELEMETRY_USAGE` / `_DIAGNOSTICS`; `applyTelemetryEnvOverrides` applies them at boot over `settings.json`. The `editmamei config` CLI / settings file stays the source of truth on the npm path.
+
+### Changed
+
+- **The license now grants free use.** The LICENSE was rewritten as a proper free-to-use proprietary license — it explicitly permits installing and using Editmamei at no charge for personal or commercial work, while reserving redistribution, modification, and reverse engineering, and keeping Pro behind a paid license.
+  - Removed the unbacked "24-month → MIT" abandonment clause from the website license page; the LICENSE now ships inside the `.mcpb` bundle too, alongside the npm tarball.
+- **Installs are now visible in telemetry.** Editmamei sends a one-time, content-free boot ping when it starts, so a fresh install is counted even before any edit runs.
+  - New `session_start` event — the same content-free dimensions as the usage event (no tool name, no counts, no free text); the server folds it into the distinct-install rollup only. Follows the same usage opt-out as every Category A event.
+
+---
+
 ## [0.17.2] — 2026-06-18
 
 (No user-facing changes pending — next commit appends here.)
@@ -942,54 +958,55 @@ license activation flow land in v1.0.0.
 
 ---
 
-[Unreleased]: https://github.com/editmamei/editmamei-ce/compare/v0.17.2...HEAD
-[0.17.2]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.17.2
-[0.17.1]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.17.1
-[0.17.0]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.17.0
-[0.16.4]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.16.4
-[0.16.3]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.16.3
-[0.16.2]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.16.2
-[0.16.1]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.16.1
-[0.16.0]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.16.0
-[0.15.0]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.15.0
-[0.14.0]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.14.0
-[0.13.1]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.13.1
-[0.13.0]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.13.0
-[0.12.2]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.12.2
-[0.12.1]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.12.1
-[0.12.0]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.12.0
-[0.11.6]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.11.6
-[0.11.5]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.11.5
-[0.11.4]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.11.4
-[0.11.3]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.11.3
-[0.11.2]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.11.2
-[0.11.1]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.11.1
-[0.11.0]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.11.0
-[0.10.0]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.10.0
-[0.9.0]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.9.0
-[0.8.5]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.8.5
-[0.8.4]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.8.4
-[0.8.3]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.8.3
-[0.8.2]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.8.2
-[0.8.1]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.8.1
-[0.8.0]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.8.0
-[0.7.2]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.7.2
-[0.7.1]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.7.1
-[0.7.0]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.7.0
-[0.6.0]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.6.0
-[0.5.8]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.5.8
-[0.5.7]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.5.7
-[0.5.6]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.5.6
-[0.5.5]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.5.5
-[0.5.4]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.5.4
-[0.5.3]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.5.3
-[0.5.2]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.5.2
-[0.5.1]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.5.1
-[0.5.0]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.5.0
-[0.4.3]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.4.3
-[0.4.2]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.4.2
-[0.4.1]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.4.1
-[0.4.0]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.4.0
-[0.3.1]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.3.1
-[0.3.0]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.3.0
-[0.2.0]: https://github.com/editmamei/editmamei-ce/releases/tag/v0.2.0
+[Unreleased]: https://github.com/editmamei/editmamei-wiki/compare/v0.17.3...HEAD
+[0.17.3]: https://github.com/editmamei/editmamei-wiki/releases/tag/v0.17.3
+[0.17.2]: https://github.com/editmamei/editmamei-wiki/releases/tag/v0.17.2
+[0.17.1]: https://github.com/editmamei/editmamei-wiki/releases/tag/v0.17.1
+[0.17.0]: https://github.com/editmamei/editmamei-wiki/releases/tag/v0.17.0
+[0.16.4]: https://github.com/editmamei/editmamei-wiki/releases/tag/v0.16.4
+[0.16.3]: https://github.com/editmamei/editmamei-wiki/releases/tag/v0.16.3
+[0.16.2]: https://github.com/editmamei/editmamei-wiki/releases/tag/v0.16.2
+[0.16.1]: https://github.com/editmamei/editmamei-wiki/releases/tag/v0.16.1
+[0.16.0]: https://github.com/editmamei/editmamei-wiki/releases/tag/v0.16.0
+[0.15.0]: https://github.com/editmamei/editmamei-wiki/releases/tag/v0.15.0
+[0.14.0]: https://github.com/editmamei/editmamei-wiki/releases/tag/v0.14.0
+[0.13.1]: https://github.com/editmamei/editmamei-wiki/releases/tag/v0.13.1
+[0.13.0]: https://github.com/editmamei/editmamei-wiki/releases/tag/v0.13.0
+[0.12.2]: https://github.com/editmamei/editmamei-wiki/releases/tag/v0.12.2
+[0.12.1]: https://github.com/editmamei/editmamei-wiki/releases/tag/v0.12.1
+[0.12.0]: https://github.com/editmamei/editmamei-wiki/releases/tag/v0.12.0
+[0.11.6]: https://github.com/editmamei/editmamei-wiki/releases/tag/v0.11.6
+[0.11.5]: https://github.com/editmamei/editmamei-wiki/releases/tag/v0.11.5
+[0.11.4]: https://github.com/editmamei/editmamei-wiki/releases/tag/v0.11.4
+[0.11.3]: https://github.com/editmamei/editmamei-wiki/releases/tag/v0.11.3
+[0.11.2]: https://github.com/editmamei/editmamei-wiki/releases/tag/v0.11.2
+[0.11.1]: https://github.com/editmamei/editmamei-wiki/releases/tag/v0.11.1
+[0.11.0]: https://github.com/editmamei/editmamei-wiki/releases/tag/v0.11.0
+[0.10.0]: https://github.com/editmamei/editmamei-wiki/releases/tag/v0.10.0
+[0.9.0]: https://github.com/editmamei/editmamei-wiki/releases/tag/v0.9.0
+[0.8.5]: https://github.com/editmamei/editmamei-wiki/releases/tag/v0.8.5
+[0.8.4]: https://github.com/editmamei/editmamei-wiki/releases/tag/v0.8.4
+[0.8.3]: https://github.com/editmamei/editmamei-wiki/releases/tag/v0.8.3
+[0.8.2]: https://github.com/editmamei/editmamei-wiki/releases/tag/v0.8.2
+[0.8.1]: https://github.com/editmamei/editmamei-wiki/releases/tag/v0.8.1
+[0.8.0]: https://github.com/editmamei/editmamei-wiki/releases/tag/v0.8.0
+[0.7.2]: https://github.com/editmamei/editmamei-wiki/releases/tag/v0.7.2
+[0.7.1]: https://github.com/editmamei/editmamei-wiki/releases/tag/v0.7.1
+[0.7.0]: https://github.com/editmamei/editmamei-wiki/releases/tag/v0.7.0
+[0.6.0]: https://github.com/editmamei/editmamei-wiki/releases/tag/v0.6.0
+[0.5.8]: https://github.com/editmamei/editmamei-wiki/releases/tag/v0.5.8
+[0.5.7]: https://github.com/editmamei/editmamei-wiki/releases/tag/v0.5.7
+[0.5.6]: https://github.com/editmamei/editmamei-wiki/releases/tag/v0.5.6
+[0.5.5]: https://github.com/editmamei/editmamei-wiki/releases/tag/v0.5.5
+[0.5.4]: https://github.com/editmamei/editmamei-wiki/releases/tag/v0.5.4
+[0.5.3]: https://github.com/editmamei/editmamei-wiki/releases/tag/v0.5.3
+[0.5.2]: https://github.com/editmamei/editmamei-wiki/releases/tag/v0.5.2
+[0.5.1]: https://github.com/editmamei/editmamei-wiki/releases/tag/v0.5.1
+[0.5.0]: https://github.com/editmamei/editmamei-wiki/releases/tag/v0.5.0
+[0.4.3]: https://github.com/editmamei/editmamei-wiki/releases/tag/v0.4.3
+[0.4.2]: https://github.com/editmamei/editmamei-wiki/releases/tag/v0.4.2
+[0.4.1]: https://github.com/editmamei/editmamei-wiki/releases/tag/v0.4.1
+[0.4.0]: https://github.com/editmamei/editmamei-wiki/releases/tag/v0.4.0
+[0.3.1]: https://github.com/editmamei/editmamei-wiki/releases/tag/v0.3.1
+[0.3.0]: https://github.com/editmamei/editmamei-wiki/releases/tag/v0.3.0
+[0.2.0]: https://github.com/editmamei/editmamei-wiki/releases/tag/v0.2.0

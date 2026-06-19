@@ -135,7 +135,7 @@ Trial and refund policy will be published at [editmamei.com/pricing](https://edi
 
 ### Where do I file bugs?
 
-[github.com/editmamei/editmamei-ce/issues](https://github.com/editmamei/editmamei-ce/issues). Pick the appropriate template (bug report or feature request) and fill it in.
+[github.com/editmamei/editmamei-wiki/issues](https://github.com/editmamei/editmamei-wiki/issues). Pick the appropriate template (bug report or feature request) and fill it in.
 
 ### Where do I ask account or billing questions?
 

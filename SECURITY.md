@@ -8,7 +8,7 @@ We take security reports seriously and want to make it easy to send one.
 
 **Please do NOT open a public GitHub issue for security-impacting bugs.** The issue tracker is public; the bug report would be too. Instead, choose one of:
 
-- **GitHub Private Security Advisory** (preferred — handles disclosure timing for you): [Open an advisory](https://github.com/editmamei/editmamei-ce/security/advisories/new). Pick the maturity (draft / collaborate / publish) that fits.
+- **GitHub Private Security Advisory** (preferred — handles disclosure timing for you): [Open an advisory](https://github.com/editmamei/editmamei-wiki/security/advisories/new). Pick the maturity (draft / collaborate / publish) that fits.
 - **Email**: [security@editmamei.com](mailto:security@editmamei.com). PGP key on request.
 
 Please include:
@@ -34,7 +34,7 @@ Out of scope (for this package):
 - Adobe Photoshop itself. Adobe has its own [security disclosure program](https://helpx.adobe.com/security.html).
 - The AI client that hosts Editmamei (Claude Desktop, Cursor, Claude Code, etc.). Each vendor has its own disclosure process.
 - Editmamei.com marketing site and infrastructure — separate disclosure path documented at [editmamei.com/security](https://editmamei.com/security).
-- Already-disclosed issues already on this repo's [security advisories](https://github.com/editmamei/editmamei-ce/security/advisories).
+- Already-disclosed issues already on this repo's [security advisories](https://github.com/editmamei/editmamei-wiki/security/advisories).
 
 ## What to expect
 
