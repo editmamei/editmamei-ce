@@ -79,7 +79,7 @@ If you want to contribute code changes, the highest-leverage path is to file a r
 
 ## Code of conduct
 
-There isn't a formal code-of-conduct document yet. The short version: **be decent**. Disagreements are fine — productive engineering depends on them. Personal attacks, harassment, or bad-faith engagement aren't, and we'll close issues or block contributors who go that route. If you experience or witness conduct you think falls afoul of this, email [conduct@editmamei.com](mailto:conduct@editmamei.com).
+There isn't a formal code-of-conduct document yet. The short version: **be decent**. Disagreements are fine — productive engineering depends on them. Personal attacks, harassment, or bad-faith engagement aren't, and we'll close issues or block contributors who go that route. If you experience or witness conduct you think falls afoul of this, email [support@editmamei.com](mailto:support@editmamei.com).
 
 ## Thanks
 
