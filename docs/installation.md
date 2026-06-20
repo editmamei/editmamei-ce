@@ -25,7 +25,7 @@ The fastest path if you use Claude Desktop. No terminal, and nothing else to ins
 3. Install the downloaded `editmamei.mcpb`.
 4. Restart Claude Desktop.
 
-The telemetry switches (and, when Pro launches, your license key) live in the extension's own settings under Settings → Extensions → Editmamei, so there's no config file to edit. Then skip ahead to [Photoshop preferences](#photoshop-preferences) and [Verify](#verify).
+The telemetry switches and your Pro license key (if you have one) live in the extension's own settings under Settings → Extensions → Editmamei, so there's no config file to edit. Then skip ahead to [Photoshop preferences](#photoshop-preferences) and [Verify](#verify).
 
 ---
 
@@ -201,4 +201,4 @@ The `uninstall` subcommand removes Editmamei from your MCP client configs. The `
 
 ## Pro
 
-Pro is coming soon. Community is free and available today; Pro isn't purchasable yet. When it launches you'll install it over your Community setup and activate it with a license. See [pro-features.md](pro-features.md) for what Pro adds and [roadmap.md](roadmap.md) for status.
+Pro installs over your existing Community setup. Buy at [editmamei.com/pricing](https://editmamei.com/pricing), then activate with your license key: with an npm install, run `editmamei activate YOUR-KEY` and restart your client; with the Claude Desktop extension, paste your key into **Settings → Extensions → Editmamei → Pro license key** and restart. Full steps at [editmamei.com/activate](https://editmamei.com/activate). See [pro-features.md](pro-features.md) for what Pro adds and [roadmap.md](roadmap.md) for what's planned next.

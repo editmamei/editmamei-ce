@@ -10,7 +10,7 @@ If a tool or capability appears here but not in [`pro-features.md`](pro-features
 
 **Community is live.** Install it free from npm (`npm install -g editmamei`), or as a one-click `.mcpb` extension for Claude Desktop. See [installation.md](installation.md). The [CHANGELOG](../CHANGELOG.md) tracks what's landed.
 
-**Pro is coming soon.** The Pro feature set is defined (the reproducible-template system, Sensei-backed selections, and Photoshop Actions plus scripting; see [pro-features.md](pro-features.md)), but it isn't purchasable yet. When it launches you'll buy at [editmamei.com/pricing](https://editmamei.com/pricing) and activate it over your Community install with a license. The [installation.md "Pro"](installation.md#pro), [pro-features.md "Activating Pro"](pro-features.md#activating-pro), and [faq.md](faq.md#how-do-i-activate-a-pro-license) sections get the concrete activation steps at launch.
+**Pro is live.** Buy at [editmamei.com/pricing](https://editmamei.com/pricing) and activate it over your Community install with a license. Concrete activation steps are in [installation.md "Pro"](installation.md#pro), [pro-features.md "Activating Pro"](pro-features.md#activating-pro), [faq.md](faq.md#how-do-i-activate-a-pro-license), and at [editmamei.com/activate](https://editmamei.com/activate).
 
 ---
 

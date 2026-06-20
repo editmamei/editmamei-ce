@@ -1,6 +1,6 @@
 # Pro features
 
-Editmamei ships in two editions under the same package name. Community installs free from the public npm registry. Pro is the same `editmamei` package delivered as its own build with your purchase: install it over Community, restart your AI client, and the Pro tools appear. Same CLI, same install flow, same MCP server name.
+Editmamei ships in two editions under the same package name. Community installs free from the public npm registry. Pro is the same `editmamei` package: you keep your Community install, activate a license, and the Pro tools appear after a restart. Same CLI, same MCP server name, no separate download to manage.
 
 Both editions follow the same rule: AI orchestration, not generation. Photoshop edits with its own real tools; Pro just gives the AI a deeper toolkit to orchestrate.
 
@@ -10,7 +10,12 @@ This page describes the line between Community and Pro as it stands today. The s
 
 ## Activating Pro
 
-Pro is coming soon. Community is free and available today; Pro isn't purchasable yet. When it launches you'll buy at [editmamei.com/pricing](https://editmamei.com/pricing) and activate it over your existing Community install with a license, and this section gets the concrete steps. See [roadmap.md](roadmap.md) for status.
+Pro is available now. Community is free; Pro is a paid license you buy at [editmamei.com/pricing](https://editmamei.com/pricing) and activate over your existing Community install.
+
+- **Claude Code / npm clients:** run `editmamei activate YOUR-KEY` in your terminal, then restart your AI client. Check status anytime with `editmamei license`.
+- **Claude Desktop extension:** open **Settings → Extensions → Editmamei**, paste your key into the **Pro license key** field, save, and restart Claude Desktop.
+
+One license covers two devices; switch a device with `editmamei deactivate` or from your account portal. Pro works offline between periodic check-ins, and if a subscription lapses Editmamei keeps running as Community rather than locking you out. Full walkthrough: [editmamei.com/activate](https://editmamei.com/activate).
 
 ---
 
@@ -76,4 +81,4 @@ Roadmap items live in [`roadmap.md`](roadmap.md). Highlights: Smart Objects with
 
 ## Pricing
 
-Pricing and purchase options will be published at [editmamei.com/pricing](https://editmamei.com/pricing) when Pro launches.
+Pricing and purchase options are at [editmamei.com/pricing](https://editmamei.com/pricing): monthly, annual, or a one-time perpetual license, each covering two devices.

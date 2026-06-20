@@ -258,9 +258,10 @@ using a cloud AI, and a function of which assistant you choose, not a hop Editma
 
 ## Pro
 
-Pro is not yet released. When it is, validating a Pro license will involve a content-free check
-(no document, image, or path data), and this page will be updated to describe it precisely
-before it ships.
+Validating a Pro license is a content-free check. Confirming your license sends the license key
+and a device identifier (Pro covers two devices per license) to the licensing service, and never
+any document, image, or path data. Your photos stay on your machine, exactly as with the rest of
+Editmamei.
 
 ---
 

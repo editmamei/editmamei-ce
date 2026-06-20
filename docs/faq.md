@@ -121,11 +121,11 @@ See the full breakdown in [pro-features.md](pro-features.md). Short version: Com
 
 ### How do I activate a Pro license?
 
-Pro is coming soon. Community is free and available today; Pro isn't purchasable yet. When it launches you'll buy at [editmamei.com/pricing](https://editmamei.com/pricing) and activate it over your existing Community install, and the exact steps will be documented here. See [pro-features.md](pro-features.md) for what Pro adds.
+Buy Pro at [editmamei.com/pricing](https://editmamei.com/pricing), then activate it over your existing Community install. If you run Editmamei through Claude Code or another npm client, run `editmamei activate YOUR-KEY` in your terminal and restart the client (check status anytime with `editmamei license`). If you use the Claude Desktop extension, open **Settings → Extensions → Editmamei**, paste your key into the **Pro license key** field, save, and restart Claude Desktop. Full walkthrough at [editmamei.com/activate](https://editmamei.com/activate). See [pro-features.md](pro-features.md) for what Pro adds.
 
 ### Do you offer a free trial?
 
-Trial and refund details will be published at [editmamei.com/pricing](https://editmamei.com/pricing) when Pro launches.
+Community is free forever, so you can use the full core toolkit at no cost before deciding on Pro. For current Pro plans and terms, see [editmamei.com/pricing](https://editmamei.com/pricing). If a paid subscription ever lapses, Editmamei keeps running as Community rather than locking you out.
 
 ---
 
