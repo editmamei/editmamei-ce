@@ -12,6 +12,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ---
 
+## [0.17.5] — 2026-06-20
+
+### Fixed
+
+- **Pro now unlocks on the one-click Claude Desktop install.** Pasting a Pro license key into the Claude Desktop extension settings now downloads and installs the Pro tools automatically — previously it activated the license but never fetched the module, so the paid tools never appeared on that install path (only the terminal activation route worked).
+  - `maybeActivateFromEnv` now provisions the entitled module after activating, gated on entitled-and-not-installed so steady-state boots make no network call; non-fatal — a fetch failure leaves a valid license and the free surface and never blocks boot.
+
+---
+
 ## [0.17.4] — 2026-06-19
 
 (No user-facing changes pending — next commit appends here.)
@@ -964,7 +973,8 @@ license activation flow land in v1.0.0.
 
 ---
 
-[Unreleased]: https://github.com/editmamei/editmamei-wiki/compare/v0.17.4...HEAD
+[Unreleased]: https://github.com/editmamei/editmamei-wiki/compare/v0.17.5...HEAD
+[0.17.5]: https://github.com/editmamei/editmamei-wiki/releases/tag/v0.17.5
 [0.17.4]: https://github.com/editmamei/editmamei-wiki/releases/tag/v0.17.4
 [0.17.3]: https://github.com/editmamei/editmamei-wiki/releases/tag/v0.17.3
 [0.17.2]: https://github.com/editmamei/editmamei-wiki/releases/tag/v0.17.2
