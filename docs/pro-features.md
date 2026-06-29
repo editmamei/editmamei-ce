@@ -75,7 +75,7 @@ Each returns the same rich feedback bundle as the Community selections (area cov
 
 ### Coming later in Pro
 
-Roadmap items live in [`roadmap.md`](roadmap.md). Highlights: Smart Objects with editable contents, Smart Filters, channels and alpha-channel storage, vector paths and vector masks, the complete adjustment-layer catalog, `photoshop_refine_selection_edge`, and advanced transforms (skew, perspective, distort, plus selection-modify primitives).
+Roadmap items live in [`roadmap.md`](roadmap.md). Highlights: Smart Objects with editable contents, Smart Filters, channels and alpha-channel storage, vector paths and vector masks, the complete adjustment-layer catalog, and advanced transforms (skew, perspective, distort, plus selection-modify primitives).
 
 ---
 

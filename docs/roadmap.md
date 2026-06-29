@@ -40,7 +40,7 @@ Today's adjustment-layer set covers the basics (Curves, Levels, Hue/Saturation, 
 
 ### Refine selection edge
 
-`photoshop_refine_selection_edge`: edge refinement with smoothing, contrast, and edge shift. Belongs with the Sensei-backed selection set.
+Basic edge refinement (smoothing, contrast, edge shift) now ships in `ps_modify_selection`. A higher-quality, Sensei-backed edge refinement remains on the roadmap.
 
 ### Advanced transforms
 

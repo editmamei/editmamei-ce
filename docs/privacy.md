@@ -210,7 +210,7 @@ Sent **only** when you set `telemetry.diagnostics true`, and only when something
   "editmamei_version": "0.16.2",
   "platform": "win32",
   "ps_version": "2026",
-  "tool": "photoshop_apply_shadows_highlights",
+  "tool": "ps_apply_adjustment",
   "error_class": "am_descriptor_no_op",
   "error_message": "…sanitized; paths reduced to filenames…",
   "snippet": "applyShadowsHighlights",

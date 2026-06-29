@@ -92,7 +92,7 @@ The current Community tool surface does not include a file-deletion tool. The AI
 
 ### How does the AI know what the image looks like?
 
-Through `ps_get_preview`, which returns a downscaled JPEG of the current document state. The AI calls this when it needs to verify its own work or judge an aesthetic outcome. It can also call `ps_get_histogram` for per-channel pixel distributions and `photoshop_get_metadata` for dimensions, color mode, and embedded profile.
+Through `ps_get_preview`, which returns a downscaled JPEG of the current document state. The AI calls this when it needs to verify its own work or judge an aesthetic outcome. It can also call `ps_get_histogram` for per-channel pixel distributions and `ps_inspect` for dimensions, color mode, and embedded profile.
 
 ### Does Editmamei collect any data about my edits?
 

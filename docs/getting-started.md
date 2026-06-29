@@ -24,7 +24,7 @@ If you instead see "tool not found" or a connection error, jump to [Troubleshoot
 
 > "Open `C:\Users\me\Pictures\test.jpg` in Photoshop and tell me the dimensions and color profile."
 
-The AI calls `ps_open_document` and `photoshop_get_metadata`. You'll see the document appear in Photoshop and the AI report back with the file's dimensions, color mode, and embedded ICC profile.
+The AI calls `ps_open_document` and `ps_inspect`. You'll see the document appear in Photoshop and the AI report back with the file's dimensions, color mode, and embedded ICC profile.
 
 Use any path that points to an image file you have. JPEG, PNG, TIFF, PSD, DNG, and most raw formats are supported.
 
@@ -52,7 +52,7 @@ The AI calls `ps_get_preview`, which returns a downscaled JPEG of the current do
 
 > "Save the layered PSD next to the original and export a 2400px JPEG to the same folder."
 
-The AI calls `ps_save_psd` for the PSD and `photoshop_export_jpeg` for the JPEG (`photoshop_export_png` is also available for PNG output). Both files appear in your filesystem at the specified paths.
+The AI calls `ps_save_psd` for the PSD and `ps_export` for the JPEG (`ps_export` also produces PNG and the other formats). Both files appear in your filesystem at the specified paths.
 
 ---
 
@@ -66,7 +66,7 @@ Once the basics work, try one of these:
 
 **A portrait retouching setup:**
 
-> "Click the background near the subject with photoshop_magic_wand (tolerance 30, anti_alias true), feather the selection 2 pixels, invert the selection, then add a Curves adjustment layer clipped to that selection that gently warms the skin tones."
+> "Click the background near the subject with `ps_select` (mode `magic_wand`, tolerance 30, anti_alias true), feather the selection 2 pixels, invert the selection, then add a Curves adjustment layer clipped to that selection that gently warms the skin tones."
 
 *(Sensei-backed `ps_select_subject` does the same thing in one call but is a Pro tool; see [pro-features.md](pro-features.md).)*
 
